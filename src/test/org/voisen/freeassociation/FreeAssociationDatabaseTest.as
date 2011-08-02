@@ -10,12 +10,13 @@ package test.org.voisen.freeassociation
 		[Before]
 		public function setUp():void
 		{
-            database = new FreeAssociationDatabase():
+            database = new FreeAssociationDatabase();
 		}
 		
 		[After]
 		public function tearDown():void
 		{
+            database = null;
 		}
 		
 		[BeforeClass]
