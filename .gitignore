@@ -1,0 +1,5 @@
+src/FlexUnitApplication.mxml
+.DS_Store
+bin/
+.FlexUnitSettings/
+.settings/
