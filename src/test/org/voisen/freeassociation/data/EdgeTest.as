@@ -22,30 +22,62 @@
 
 package test.org.voisen.freeassociation.data
 {
+    import org.flexunit.asserts.assertEquals;
+    import org.flexunit.asserts.assertNotNull;
+    import org.voisen.freeassociation.data.Edge;
+
     public class EdgeTest
     {
+        //---------------------------------------------------------------------
+        //
+        // Prep
+        //
+        //---------------------------------------------------------------------
+        
         [Before]
         public function setUp():void
         {
-            
+            edge = new Edge("word");     
         }
         
         [After]
         public function tearDown():void
         {
-            
+           edge = null; 
         }
+        
+        //---------------------------------------------------------------------
+        //
+        // Tests
+        //
+        //---------------------------------------------------------------------
         
         [Test]
         public function should_set_word_from_constructor():void
         {
-            
+           assertNotNull(edge.word); 
         }
         
         [Test]
-        public function should_convert_word_to_uppercase()
+        public function should_set_word_from_setter():void
         {
-            
+            edge.word = "foo";
+            assertEquals(edge.word.toLowerCase(), "foo");
         }
+        
+        [Test]
+        public function should_convert_word_to_uppercase():void
+        {
+           edge.word = "word";
+           assertEquals(edge.word, "WORD"); 
+        }
+        
+        //---------------------------------------------------------------------
+        //
+        // Properties
+        //
+        //---------------------------------------------------------------------
+        
+        private var edge:Edge;
     }
 }

@@ -62,8 +62,15 @@ package test.org.voisen.freeassociation.data
         [Test]
         public function should_be_able_to_set_and_get_word():void
         {
-            node.word = "WORD";
-            assertEquals(node.word, "WORD"); 
+            node.word = "MOTHER";
+            assertEquals(node.word, "MOTHER"); 
+        }
+        
+        [Test]
+        public function should_convert_word_to_uppercase():void
+        {
+            node.word = "word";
+            assertEquals(node.word, "WORD");
         }
         
         [Test]
@@ -71,8 +78,9 @@ package test.org.voisen.freeassociation.data
         {
             addSampleEdge();
             
-            assertEquals(node.numEdges, 1);
+            assertEquals(node.degree, 1);
         }
+        
         [Test]
         public function should_be_able_to_remove_edge():void
         {
@@ -81,7 +89,31 @@ package test.org.voisen.freeassociation.data
             var result:Boolean = node.removeEdgeWithWord("MOTHER");
             
             assertTrue(result);
-            assertEquals(node.numEdges, 0);
+            assertEquals(node.degree, 0);
+        }
+        
+        [Test]
+        public function should_be_able_to_determine_if_edge_already_exists():void
+        {
+            var edge:Edge = addSampleEdge();
+            
+            assertTrue(node.hasEdgeWithWord(edge.word))
+        }
+        
+        [Test]
+        public function should_be_able_to_get_edge():void
+        {
+            var edge:Edge = addSampleEdge();
+            
+            assertEquals(node.getEdgeWithWord(edge.word), edge);
+        }
+        
+        [Test]
+        public function should_be_case_insensitive_when_searching_edges():void
+        {
+           var edge:Edge = addSampleEdge();
+           
+           assertEquals(node.getEdgeWithWord("mOTheR"), edge);
         }
         
         //---------------------------------------------------------------------
@@ -95,10 +127,11 @@ package test.org.voisen.freeassociation.data
             return new Edge("MOTHER");
         }
 
-        private function addSampleEdge():void
+        private function addSampleEdge():Edge
         {
             var edge:Edge = createSampleEdge();
             node.addEdge(edge);
+            return edge;
         }
         
         //---------------------------------------------------------------------

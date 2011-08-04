@@ -50,6 +50,11 @@ package org.voisen.freeassociation.data
 
         public function set word(value:String):void
         {
+            value = value.toUpperCase();
+            
+            if (_word == value)
+                return;
+            
             _word = value;
         }
     }

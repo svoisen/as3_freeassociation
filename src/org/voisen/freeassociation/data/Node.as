@@ -30,9 +30,9 @@ package org.voisen.freeassociation.data
         //
         //---------------------------------------------------------------------
         
-        public function Node(value:String)
+        public function Node(word:String)
         {
-            _word = value;
+            this.word = word;
         }
         
         //---------------------------------------------------------------------
@@ -54,15 +54,19 @@ package org.voisen.freeassociation.data
 
         public function set word(value:String):void
         {
-            if (value != _word)
-                _word = value;
+            value = value.toUpperCase();
+            
+            if (value == _word)
+                return;
+            
+            _word = value;
         }
         
         //---------------------------------------------------------------------
-        // numEdges
+        // degree
         //---------------------------------------------------------------------
         
-        public function get numEdges():int
+        public function get degree():int
         {
             return edges.length;
         }
@@ -81,21 +85,51 @@ package org.voisen.freeassociation.data
         
         public function hasEdgeWithWord(word:String):Boolean
         {
-            return false;
+            var index:int = getIndexForEdgeWithWord(word);
+            
+            return index > -1;
         }
         
         public function removeEdgeWithWord(word:String):Boolean
         {
-            for (var i:int = edges.length - 1; i >= 0; i--)
+            var index:int = getIndexForEdgeWithWord(word);
+            
+            if (index > -1)
             {
-                if (edges[i].word == word)
-                {
-                    edges.splice(i, 1);
-                    return true;
-                }
+                edges.splice(index, 1);
+                return true;
             }
             
             return false;
+        }
+        
+        public function getEdgeWithWord(word:String):Edge
+        {
+            var index:int = getIndexForEdgeWithWord(word);
+            
+            if (index > -1)
+                return edges[index];
+            
+            return null;
+        }
+        
+        //---------------------------------------------------------------------
+        //
+        // Private Methods
+        //
+        //---------------------------------------------------------------------
+        
+        private function getIndexForEdgeWithWord(word:String):int
+        {
+            word = word.toUpperCase();
+            
+            for (var i:int = edges.length - 1; i >= 0; i--)
+            {
+                if (edges[i].word == word)
+                    return i;
+            }
+            
+            return -1;
         }
         
         //---------------------------------------------------------------------

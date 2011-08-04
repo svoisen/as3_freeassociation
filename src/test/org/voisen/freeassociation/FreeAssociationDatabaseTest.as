@@ -22,8 +22,12 @@
 
 package test.org.voisen.freeassociation
 {
+    import org.flexunit.asserts.assertEquals;
     import org.flexunit.asserts.assertNotNull;
     import org.voisen.freeassociation.FreeAssociationDatabase;
+    import org.voisen.freeassociation.data.CSVData;
+    
+    import test.org.voisen.freeassociation.data.CSVDataTest;
 
 	public class FreeAssociationDatabaseTest
 	{		
@@ -52,6 +56,7 @@ package test.org.voisen.freeassociation
         {
            database.initialize(); 
            
+           assertEquals(database.nodeCount, CSVDataTest.CSV_DATA_ROW_COUNT);
         }
 	}
 }
