@@ -20,38 +20,33 @@
  * IN THE SOFTWARE.
  */
 
-package test.org.voisen.freeassociation
+package org.voisen.freeassociation.data
 {
-    import org.flexunit.asserts.assertNotNull;
-    import org.voisen.freeassociation.FreeAssociationDatabase;
+    import flash.utils.ByteArray;
 
-	public class FreeAssociationDatabaseTest
-	{		
-        private var database:FreeAssociationDatabase;
+    public class CSVData
+    {
+        [Embed(source="assets/data.csv", mimeType="application/octet-stream")]
+        private const RawData:Class;
         
-		[Before]
-		public function setUp():void
-		{
-            database = new FreeAssociationDatabase();
-		}
-		
-		[After]
-		public function tearDown():void
-		{
-            database = null;
-		}
-		
-		[Test]
-        public function should_be_able_to_instantiate():void
-        {
-            assertNotNull(database);     
-        }
+        private var _rows:Vector.<String>;
         
-        [Test]
-        public function should_initialize_from_csv_data():void
+        public function CSVData()
         {
-           database.initialize(); 
-           
         }
-	}
+
+        public function get rows():Vector.<String>
+        {
+            if (!_rows)
+                populateRows(); 
+            
+            return _rows;
+        }
+
+        private function populateRows():void
+        {
+            var bytes:ByteArray = new RawData() as ByteArray;
+            _rows = Vector.<String>(bytes.readUTFBytes(bytes.length).split('\n'));
+        }
+    }
 }

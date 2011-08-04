@@ -20,38 +20,37 @@
  * IN THE SOFTWARE.
  */
 
-package test.org.voisen.freeassociation
+package org.voisen.freeassociation.data
 {
-    import org.flexunit.asserts.assertNotNull;
-    import org.voisen.freeassociation.FreeAssociationDatabase;
+    public class Edge
+    {
+        //---------------------------------------------------------------------
+        //
+        // Constructor
+        //
+        //---------------------------------------------------------------------
+        
+        public function Edge(word:String)
+        {
+            this.word = word;
+        }
+        
+        //---------------------------------------------------------------------
+        //
+        // Mutators
+        //
+        //---------------------------------------------------------------------
+        
+        private var _word:String;
 
-	public class FreeAssociationDatabaseTest
-	{		
-        private var database:FreeAssociationDatabase;
-        
-		[Before]
-		public function setUp():void
-		{
-            database = new FreeAssociationDatabase();
-		}
-		
-		[After]
-		public function tearDown():void
-		{
-            database = null;
-		}
-		
-		[Test]
-        public function should_be_able_to_instantiate():void
+        public function get word():String
         {
-            assertNotNull(database);     
+            return _word;
         }
-        
-        [Test]
-        public function should_initialize_from_csv_data():void
+
+        public function set word(value:String):void
         {
-           database.initialize(); 
-           
+            _word = value;
         }
-	}
+    }
 }

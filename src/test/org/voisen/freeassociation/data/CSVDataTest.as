@@ -20,38 +20,42 @@
  * IN THE SOFTWARE.
  */
 
-package test.org.voisen.freeassociation
+package test.org.voisen.freeassociation.data
 {
+    import org.flexunit.assertThat;
     import org.flexunit.asserts.assertNotNull;
-    import org.voisen.freeassociation.FreeAssociationDatabase;
+    import org.hamcrest.object.equalTo;
+    import org.voisen.freeassociation.data.CSVData;
 
-	public class FreeAssociationDatabaseTest
-	{		
-        private var database:FreeAssociationDatabase;
+    public class CSVDataTest
+    {		
+        private var csvData:CSVData;
         
-		[Before]
-		public function setUp():void
-		{
-            database = new FreeAssociationDatabase();
-		}
-		
-		[After]
-		public function tearDown():void
-		{
-            database = null;
-		}
-		
-		[Test]
-        public function should_be_able_to_instantiate():void
+        private static const CSV_DATA_ROW_COUNT:int = 72176;
+        
+        [Before]
+        public function setUp():void
         {
-            assertNotNull(database);     
+            csvData = new CSVData();
+        }
+        
+        [After]
+        public function tearDown():void
+        {
+            csvData = null;
         }
         
         [Test]
-        public function should_initialize_from_csv_data():void
+        public function should_be_able_to_instantiate():void
         {
-           database.initialize(); 
-           
+           assertNotNull(csvData); 
         }
-	}
+        
+        [Test]
+        public function should_be_able_to_get_rows():void
+        {
+            assertNotNull(csvData.rows);
+            assertThat(csvData.rows.length, equalTo(CSV_DATA_ROW_COUNT));
+        }
+    }
 }
