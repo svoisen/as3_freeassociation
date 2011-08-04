@@ -63,12 +63,17 @@ package org.voisen.freeassociation.data
         }
         
         //---------------------------------------------------------------------
-        // degree
+        // responseCount
         //---------------------------------------------------------------------
         
-        public function get degree():int
+        public function get responseCount():int
         {
-            return edges.length;
+            return responseNeighbors.length;
+        }
+        
+        public function get cueCount():int
+        {
+            return cueNeighbors.length;
         }
         
         //---------------------------------------------------------------------
@@ -77,38 +82,51 @@ package org.voisen.freeassociation.data
         //
         //---------------------------------------------------------------------
         
-        public function addEdge(edge:Edge):void
+        public function addResponseNeighbor(node:Node):void
         {
-           if (edge && !hasEdgeWithWord(edge.word))
-               edges.push(edge);
+            if (responseNeighbors.indexOf(node) == -1)
+                responseNeighbors.push(node);
+            
+            node.addCueNeighbor(this);
         }
         
-        public function hasEdgeWithWord(word:String):Boolean
+        public function addCueNeighbor(node:Node):void
         {
-            var index:int = getIndexForEdgeWithWord(word);
+            if (cueNeighbors.indexOf(node) == -1)
+                cueNeighbors.push(node);
+        }
+        
+        public function hasResponse(node:Node):Boolean
+        {
+            return false;
+        }
+        
+        public function hasResponseNeighborWithWord(word:String):Boolean
+        {
+            var index:int = getIndexForNeighborWithWord(responseNeighbors, word);
             
             return index > -1;
         }
         
-        public function removeEdgeWithWord(word:String):Boolean
+        public function removeResponseNeighborWithWord(word:String):Boolean
         {
-            var index:int = getIndexForEdgeWithWord(word);
+            var index:int = getIndexForNeighborWithWord(responseNeighbors, word);
             
             if (index > -1)
             {
-                edges.splice(index, 1);
+                responseNeighbors.splice(index, 1);
                 return true;
             }
             
             return false;
         }
         
-        public function getEdgeWithWord(word:String):Edge
+        public function getResponseNeighborWithWord(word:String):Node
         {
-            var index:int = getIndexForEdgeWithWord(word);
+            var index:int = getIndexForNeighborWithWord(responseNeighbors, word);
             
             if (index > -1)
-                return edges[index];
+                return responseNeighbors[index] as Node;
             
             return null;
         }
@@ -119,13 +137,13 @@ package org.voisen.freeassociation.data
         //
         //---------------------------------------------------------------------
         
-        private function getIndexForEdgeWithWord(word:String):int
+        private function getIndexForNeighborWithWord(neighborsVector:Vector.<Node>, word:String):int
         {
             word = word.toUpperCase();
             
-            for (var i:int = edges.length - 1; i >= 0; i--)
+            for (var i:int = neighborsVector.length - 1; i >= 0; i--)
             {
-                if (edges[i].word == word)
+                if (neighborsVector[i].word == word)
                     return i;
             }
             
@@ -138,6 +156,7 @@ package org.voisen.freeassociation.data
         //
         //---------------------------------------------------------------------
         
-        private var edges:Vector.<Edge> = new Vector.<Edge>();
+        private var responseNeighbors:Vector.<Node> = new Vector.<Node>();
+        private var cueNeighbors:Vector.<Node> = new Vector.<Node>();
     }
 }

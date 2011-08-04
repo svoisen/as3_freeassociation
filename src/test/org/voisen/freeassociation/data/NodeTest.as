@@ -22,9 +22,9 @@
 
 package test.org.voisen.freeassociation.data
 {
+    import org.flexunit.assertThat;
     import org.flexunit.asserts.assertEquals;
     import org.flexunit.asserts.assertTrue;
-    import org.voisen.freeassociation.data.Edge;
     import org.voisen.freeassociation.data.Node;
 
     public class NodeTest
@@ -74,46 +74,62 @@ package test.org.voisen.freeassociation.data
         }
         
         [Test]
-        public function should_be_able_to_add_edge():void
+        public function should_be_able_to_add_response():void
         {
-            addSampleEdge();
+            addSampleResponse();
             
-            assertEquals(node.degree, 1);
+            assertEquals(node.responseCount, 1);
         }
         
         [Test]
-        public function should_be_able_to_remove_edge():void
+        public function should_be_able_to_add_cue():void
         {
-            addSampleEdge();
+            addSampleCue();
             
-            var result:Boolean = node.removeEdgeWithWord("MOTHER");
+            assertEquals(node.cueCount, 1);
+        }
+        
+        [Test]
+        public function should_add_self_as_cue_to_response():void
+        {
+            var response:Node = addSampleResponse();
+            
+            assertThat(response.hasResponse(node));
+        }
+                
+        [Test]
+        public function should_be_able_to_remove_neighbor_by_word():void
+        {
+            addSampleResponse();
+            
+            var result:Boolean = node.removeResponseNeighborWithWord("MOTHER");
             
             assertTrue(result);
-            assertEquals(node.degree, 0);
+            assertEquals(node.responseCount, 0);
         }
         
         [Test]
-        public function should_be_able_to_determine_if_edge_already_exists():void
+        public function should_be_able_to_determine_if_response_already_exists_by_word():void
         {
-            var edge:Edge = addSampleEdge();
+            var response:Node = addSampleResponse();
             
-            assertTrue(node.hasEdgeWithWord(edge.word))
+            assertTrue(node.hasResponseNeighborWithWord(response.word))
         }
         
         [Test]
-        public function should_be_able_to_get_edge():void
+        public function should_be_able_to_get_response_by_word():void
         {
-            var edge:Edge = addSampleEdge();
+            var response:Node = addSampleResponse();
             
-            assertEquals(node.getEdgeWithWord(edge.word), edge);
+            assertEquals(node.getResponseNeighborWithWord(response.word), response);
         }
         
         [Test]
-        public function should_be_case_insensitive_when_searching_edges():void
+        public function should_be_case_insensitive_when_searching_neighbors_by_word():void
         {
-           var edge:Edge = addSampleEdge();
+           var response:Node = addSampleResponse();
            
-           assertEquals(node.getEdgeWithWord("mOTheR"), edge);
+           assertEquals(node.getResponseNeighborWithWord("mOTheR"), response);
         }
         
         //---------------------------------------------------------------------
@@ -122,16 +138,23 @@ package test.org.voisen.freeassociation.data
         //
         //---------------------------------------------------------------------
         
-        private function createSampleEdge():Edge
+        private function createSampleNeighbor():Node
         {
-            return new Edge("MOTHER");
+            return new Node("MOTHER");
         }
 
-        private function addSampleEdge():Edge
+        private function addSampleResponse():Node
         {
-            var edge:Edge = createSampleEdge();
-            node.addEdge(edge);
-            return edge;
+            var response:Node = createSampleNeighbor();
+            node.addResponseNeighbor(response);
+            return response;
+        }
+        
+        private function addSampleCue():Node
+        {
+            var cue:Node = createSampleNeighbor();
+            node.addCueNeighbor(cue);
+            return cue;
         }
         
         //---------------------------------------------------------------------

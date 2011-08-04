@@ -31,7 +31,7 @@ package test.org.voisen.freeassociation.data
     {		
         private var csvData:CSVData;
         
-        public static const CSV_DATA_ROW_COUNT:int = 72176;
+        private static const CSV_DATA_ROW_COUNT:int = 72176;
         
         [Before]
         public function setUp():void

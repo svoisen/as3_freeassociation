@@ -30,14 +30,33 @@ package org.voisen.freeassociation
         
         public function initialize():void
         {
+            /*var rows:Vector.<String> = new CSVData().rows;
+            var rowsCount:int = rows.length;
+            var i:int = 0; 
+            var currentRow:Array = rows[i].split(',');
             
+            while (i < rowsCount - 1)
+            {
+                var currentWord:String = currentRow[0]; 
+                var node:Node = new QuickNode(currentWord);
+                   
+                while (currentRow[0] == currentWord)
+                {
+                       node.addResponseNeighbor(new Edge(currentRow[1]));
+                       currentRow = i < rowsCount - 1 ? rows[++i].split(',') : [null];
+                }
+                
+                hash[node.word] = node;
+                _nodeCount++;
+            }*/
         }
         
+        private var _nodeCount:int = 0;
         public function get nodeCount():int
         {
-            return 0;
+            return _nodeCount;
         }
-        
+       
         private var hash:Object = new Object();
     }
 }

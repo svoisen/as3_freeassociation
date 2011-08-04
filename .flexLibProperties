@@ -7,8 +7,6 @@
     <classEntry path="test.org.voisen.freeassociation.data.CSVDataTest"/>
     <classEntry path="org.voisen.freeassociation.data.Node"/>
     <classEntry path="test.org.voisen.freeassociation.data.NodeTest"/>
-    <classEntry path="org.voisen.freeassociation.data.Edge"/>
-    <classEntry path="test.org.voisen.freeassociation.data.EdgeTest"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
