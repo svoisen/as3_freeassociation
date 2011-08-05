@@ -71,19 +71,31 @@ package org.voisen.freeassociation.data
             return targets.length;
         }
         
+        //---------------------------------------------------------------------
+        // cueCount
+        //---------------------------------------------------------------------
+        
         public function get cueCount():int
         {
             return cues.length;
         }
         
+        //---------------------------------------------------------------------
+        // targetsAsStrings
+        //---------------------------------------------------------------------
+        
         public function get targetsAsStrings():Vector.<String>
         {
-            return null; 
+           return nodeVectorToStringVector(targets); 
         }
+        
+        //---------------------------------------------------------------------
+        // cuesAsStrings
+        //---------------------------------------------------------------------
         
         public function get cuesAsStrings():Vector.<String>
         {
-            return null;
+            return nodeVectorToStringVector(cues);
         }
         
         //---------------------------------------------------------------------
@@ -152,13 +164,23 @@ package org.voisen.freeassociation.data
         //
         //---------------------------------------------------------------------
         
-        private function getIndexForNeighborWithWord(neighborsVector:Vector.<Node>, word:String):int
+        private function nodeVectorToStringVector(vector:Vector.<Node>):Vector.<String>
+        {
+            var strings:Vector.<String> = new Vector.<String>();
+            
+            for each(var node:Node in vector)
+                strings.push(node.word);
+                
+            return strings;
+        }
+        
+        private function getIndexForNeighborWithWord(vector:Vector.<Node>, word:String):int
         {
             word = word.toUpperCase();
             
-            for (var i:int = neighborsVector.length - 1; i >= 0; i--)
+            for (var i:int = vector.length - 1; i >= 0; i--)
             {
-                if (neighborsVector[i].word == word)
+                if (vector[i].word == word)
                     return i;
             }
             

@@ -32,8 +32,14 @@ package test.org.voisen.freeassociation
     
     import test.org.voisen.freeassociation.data.CSVDataTest;
 
-	public class FreeAssociationDatabaseTest
-	{		
+    public class FreeAssociationDatabaseTest
+    {		
+        //---------------------------------------------------------------------
+        //
+        // Prep
+        //
+        //---------------------------------------------------------------------
+        
         [BeforeClass]
         public static function setUpClass():void
         {
@@ -47,19 +53,25 @@ package test.org.voisen.freeassociation
            database = null; 
         }
         
-		[Before]
-		public function setUp():void
+        [Before]
+        public function setUp():void
 		{
             
-		}
+        }
 		
-		[After]
-		public function tearDown():void
-		{
+        [After]
+        public function tearDown():void
+        {
             
-		}
+        }
 		
-		[Test]
+        //---------------------------------------------------------------------
+        //
+        // Tests
+        //
+        //---------------------------------------------------------------------
+        
+        [Test]
         public function should_be_able_to_instantiate():void
         {
             assertNotNull(database);     
@@ -86,9 +98,15 @@ package test.org.voisen.freeassociation
         [Test]
         public function should_have_valid_data():void
         {
-            
+            assertThat(database.getTargetsForCue("aardvark").indexOf("ANIMAL"), greaterThan(-1));     
         }
         
+        //---------------------------------------------------------------------
+        //
+        // Properties
+        //
+        //---------------------------------------------------------------------
+        
         private static var database:FreeAssociationDatabase;
-	}
+    }
 }

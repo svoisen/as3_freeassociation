@@ -68,6 +68,11 @@ package org.voisen.freeassociation
             return null;
         }
         
+        public function getForwardPath(startWord:String, endWord:String):Vector.<String>
+        {
+           return null; 
+        }
+        
         //---------------------------------------------------------------------
         //
         // Mutators
@@ -116,6 +121,19 @@ package org.voisen.freeassociation
             _wordCount++;
             return newNode;
         }
+        
+        private function depthFirstSearch(startNode:Node, endNode:String):Vector.<Node>
+        {
+            var stack:Vector.<Node> = Vector.<Node>([startNode]);
+            
+            return null;
+        }
+        
+        //---------------------------------------------------------------------
+        //
+        // Properties
+        //
+        //---------------------------------------------------------------------
         
         private var hash:Object = new Object();
     }

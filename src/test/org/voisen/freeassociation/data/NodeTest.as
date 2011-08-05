@@ -25,6 +25,7 @@ package test.org.voisen.freeassociation.data
     import org.flexunit.assertThat;
     import org.flexunit.asserts.assertEquals;
     import org.flexunit.asserts.assertTrue;
+    import org.hamcrest.core.isA;
     import org.voisen.freeassociation.data.Node;
 
     public class NodeTest
@@ -155,6 +156,24 @@ package test.org.voisen.freeassociation.data
            var target:Node = addSampleTarget();
            
            assertEquals(node.getTargetWithWord("mOTheR"), target);
+        }
+        
+        [Test]
+        public function should_be_able_to_get_targets_as_strings():void
+        {
+            var target:Node = addSampleTarget();
+            
+            assertThat(node.targetsAsStrings[0], isA(String));
+            assertEquals(node.targetsAsStrings[0], target.word);
+        }
+        
+        [Test]
+        public function should_be_able_to_get_cues_as_strings():void
+        {
+            var cue:Node = addSampleCue();
+            
+            assertThat(node.cuesAsStrings[0], isA(String));
+            assertEquals(node.cuesAsStrings[0], cue.word);
         }
         
         //---------------------------------------------------------------------
