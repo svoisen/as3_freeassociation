@@ -25,6 +25,7 @@ package test.org.voisen.freeassociation
     import org.flexunit.assertThat;
     import org.flexunit.asserts.assertEquals;
     import org.flexunit.asserts.assertNotNull;
+    import org.flexunit.asserts.assertTrue;
     import org.hamcrest.number.greaterThan;
     import org.voisen.freeassociation.FreeAssociationDatabase;
     import org.voisen.freeassociation.data.CSVData;
@@ -33,18 +34,29 @@ package test.org.voisen.freeassociation
 
 	public class FreeAssociationDatabaseTest
 	{		
-        private var database:FreeAssociationDatabase;
+        [BeforeClass]
+        public static function setUpClass():void
+        {
+            database = new FreeAssociationDatabase();
+            database.initialize();
+        }
+        
+        [AfterClass]
+        public static function tearDownClass():void
+        {
+           database = null; 
+        }
         
 		[Before]
 		public function setUp():void
 		{
-            database = new FreeAssociationDatabase();
+            
 		}
 		
 		[After]
 		public function tearDown():void
 		{
-            database = null;
+            
 		}
 		
 		[Test]
@@ -54,12 +66,29 @@ package test.org.voisen.freeassociation
         }
         
         [Test]
-        [Ignore]
-        public function node_count_should_be_positive_after_initialize():void
+        public function word_count_should_be_positive_after_initialize():void
         {
-           database.initialize(); 
-           
-           assertThat(database.nodeCount, greaterThan(0));
+           assertThat(database.wordCount, greaterThan(0));
         }
+        
+        [Test]
+        public function should_be_able_to_check_if_word_exists():void
+        {
+           assertTrue(database.hasWord("AARDVARK")); 
+        }
+        
+        [Test]
+        public function should_ignore_case_on_word_check():void
+        {
+           assertTrue(database.hasWord("aaRdVark")); 
+        }
+        
+        [Test]
+        public function should_have_valid_data():void
+        {
+            
+        }
+        
+        private static var database:FreeAssociationDatabase;
 	}
 }

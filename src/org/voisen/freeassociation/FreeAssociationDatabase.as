@@ -22,41 +22,101 @@
 
 package org.voisen.freeassociation
 {
+    import org.voisen.freeassociation.data.CSVData;
+    import org.voisen.freeassociation.data.Node;
+
     public class FreeAssociationDatabase
     {
+        //---------------------------------------------------------------------
+        //
+        // Constructor
+        //
+        //---------------------------------------------------------------------
+        
         public function FreeAssociationDatabase()
         {
         }
         
+        //---------------------------------------------------------------------
+        //
+        // Public Methods
+        //
+        //---------------------------------------------------------------------
+        
         public function initialize():void
         {
-            /*var rows:Vector.<String> = new CSVData().rows;
-            var rowsCount:int = rows.length;
-            var i:int = 0; 
-            var currentRow:Array = rows[i].split(',');
+            var rows:Vector.<String> = new CSVData().rows;
             
-            while (i < rowsCount - 1)
-            {
-                var currentWord:String = currentRow[0]; 
-                var node:Node = new QuickNode(currentWord);
-                   
-                while (currentRow[0] == currentWord)
-                {
-                       node.addResponseNeighbor(new Edge(currentRow[1]));
-                       currentRow = i < rowsCount - 1 ? rows[++i].split(',') : [null];
-                }
-                
-                hash[node.word] = node;
-                _nodeCount++;
-            }*/
+            for (var i:int = rows.length - 1; i >= 0; i--)
+                addDataFromRow(rows[i]);        
         }
         
-        private var _nodeCount:int = 0;
-        public function get nodeCount():int
+        public function hasWord(word:String):Boolean
         {
-            return _nodeCount;
+            word = word.toUpperCase();
+            return (word in hash);
+        }
+        
+        public function getTargetsForCue(word:String):Vector.<String>
+        {
+            word = word.toUpperCase();
+            var cueNode:Node = hash[word];
+            
+            if (cueNode)
+               return cueNode.targetsAsStrings;
+            
+            return null;
+        }
+        
+        //---------------------------------------------------------------------
+        //
+        // Mutators
+        //
+        //---------------------------------------------------------------------
+        
+        //---------------------------------------------------------------------
+        // wordCount
+        //---------------------------------------------------------------------
+        
+        // wordCount is same as nodeCount, but we expose as wordCount for
+        // user-friendliness
+        private var _wordCount:int = 0;
+        public function get wordCount():int
+        {
+            return _wordCount;
         }
        
+        //---------------------------------------------------------------------
+        //
+        // Private Methods
+        //
+        //---------------------------------------------------------------------
+        
+        private function addDataFromRow(row:String):void
+        {
+            var data:Array = row.split(', '); 
+            var cue:String = data[0];
+            var target:String = data[1];
+            var cueNode:Node = hash[cue];
+            var targetNode:Node = hash[target];
+            
+            if (!cueNode)
+                cueNode = addNode(cue);
+            
+            if (!targetNode)
+                targetNode = addNode(target);
+            
+            cueNode.addTarget(targetNode);
+        }
+        
+        private function addNode(word:String):Node
+        {
+            var newNode:Node = new Node(word);
+            hash[word] = newNode;
+            _wordCount++;
+            return newNode;
+        }
+        
         private var hash:Object = new Object();
     }
 }

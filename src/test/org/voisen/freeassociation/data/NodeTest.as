@@ -74,11 +74,19 @@ package test.org.voisen.freeassociation.data
         }
         
         [Test]
-        public function should_be_able_to_add_response():void
+        public function should_be_able_to_add_target():void
         {
-            addSampleResponse();
+            addSampleTarget();
             
-            assertEquals(node.responseCount, 1);
+            assertEquals(node.targetCount, 1);
+        }
+        
+        [Test]
+        public function should_be_able_to_check_if_target_exists():void
+        {
+            var target:Node = addSampleTarget();
+            
+            assertTrue(node.hasTarget(target));
         }
         
         [Test]
@@ -90,46 +98,63 @@ package test.org.voisen.freeassociation.data
         }
         
         [Test]
-        public function should_add_self_as_cue_to_response():void
+        public function should_not_add_duplicate_cues():void
         {
-            var response:Node = addSampleResponse();
+           var cue:Node = addSampleCue(); 
+           node.addCue(cue);
+           
+           assertEquals(node.cueCount, 1);
+        }
+        
+        [Test]
+        public function should_be_able_to_check_if_cue_exists():void
+        {
+            var cue:Node = addSampleCue();
             
-            assertThat(response.hasResponse(node));
+            assertTrue(node.hasCue(cue));
+        }
+        
+        [Test]
+        public function should_add_self_as_cue_to_target():void
+        {
+            var target:Node = addSampleTarget();
+            
+            assertThat(target.hasCue(node));
         }
                 
         [Test]
-        public function should_be_able_to_remove_neighbor_by_word():void
+        public function should_be_able_to_remove_target_by_word():void
         {
-            addSampleResponse();
+            addSampleTarget();
             
-            var result:Boolean = node.removeResponseNeighborWithWord("MOTHER");
+            var result:Boolean = node.removeTargetWithWord("MOTHER");
             
             assertTrue(result);
-            assertEquals(node.responseCount, 0);
+            assertEquals(node.targetCount, 0);
         }
         
         [Test]
-        public function should_be_able_to_determine_if_response_already_exists_by_word():void
+        public function should_be_able_to_determine_if_target_already_exists_by_word():void
         {
-            var response:Node = addSampleResponse();
+            var target:Node = addSampleTarget();
             
-            assertTrue(node.hasResponseNeighborWithWord(response.word))
+            assertTrue(node.hasTargetWithWord(target.word))
         }
         
         [Test]
-        public function should_be_able_to_get_response_by_word():void
+        public function should_be_able_to_get_target_by_word():void
         {
-            var response:Node = addSampleResponse();
+            var target:Node = addSampleTarget();
             
-            assertEquals(node.getResponseNeighborWithWord(response.word), response);
+            assertEquals(node.getTargetWithWord(target.word), target);
         }
         
         [Test]
-        public function should_be_case_insensitive_when_searching_neighbors_by_word():void
+        public function should_be_case_insensitive_when_searching_targets_by_word():void
         {
-           var response:Node = addSampleResponse();
+           var target:Node = addSampleTarget();
            
-           assertEquals(node.getResponseNeighborWithWord("mOTheR"), response);
+           assertEquals(node.getTargetWithWord("mOTheR"), target);
         }
         
         //---------------------------------------------------------------------
@@ -138,22 +163,22 @@ package test.org.voisen.freeassociation.data
         //
         //---------------------------------------------------------------------
         
-        private function createSampleNeighbor():Node
+        private function createSampleNode():Node
         {
             return new Node("MOTHER");
         }
 
-        private function addSampleResponse():Node
+        private function addSampleTarget():Node
         {
-            var response:Node = createSampleNeighbor();
-            node.addResponseNeighbor(response);
-            return response;
+            var target:Node = createSampleNode();
+            node.addTarget(target);
+            return target;
         }
         
         private function addSampleCue():Node
         {
-            var cue:Node = createSampleNeighbor();
-            node.addCueNeighbor(cue);
+            var cue:Node = createSampleNode();
+            node.addCue(cue);
             return cue;
         }
         

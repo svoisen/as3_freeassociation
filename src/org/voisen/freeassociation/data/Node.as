@@ -63,17 +63,27 @@ package org.voisen.freeassociation.data
         }
         
         //---------------------------------------------------------------------
-        // responseCount
+        // targetCount
         //---------------------------------------------------------------------
         
-        public function get responseCount():int
+        public function get targetCount():int
         {
-            return responseNeighbors.length;
+            return targets.length;
         }
         
         public function get cueCount():int
         {
-            return cueNeighbors.length;
+            return cues.length;
+        }
+        
+        public function get targetsAsStrings():Vector.<String>
+        {
+            return null; 
+        }
+        
+        public function get cuesAsStrings():Vector.<String>
+        {
+            return null;
         }
         
         //---------------------------------------------------------------------
@@ -82,51 +92,56 @@ package org.voisen.freeassociation.data
         //
         //---------------------------------------------------------------------
         
-        public function addResponseNeighbor(node:Node):void
+        public function addTarget(node:Node):void
         {
-            if (responseNeighbors.indexOf(node) == -1)
-                responseNeighbors.push(node);
+            if (!hasTarget(node))
+                targets.push(node);
             
-            node.addCueNeighbor(this);
+            node.addCue(this);
         }
         
-        public function addCueNeighbor(node:Node):void
+        public function addCue(node:Node):void
         {
-            if (cueNeighbors.indexOf(node) == -1)
-                cueNeighbors.push(node);
+            if (!hasCue(node))
+                cues.push(node);
         }
         
-        public function hasResponse(node:Node):Boolean
+        public function hasTarget(node:Node):Boolean
         {
-            return false;
+            return targets.indexOf(node) > -1;
         }
         
-        public function hasResponseNeighborWithWord(word:String):Boolean
+        public function hasCue(node:Node):Boolean
         {
-            var index:int = getIndexForNeighborWithWord(responseNeighbors, word);
+            return cues.indexOf(node) > -1;
+        }
+        
+        public function hasTargetWithWord(word:String):Boolean
+        {
+            var index:int = getIndexForNeighborWithWord(targets, word);
             
             return index > -1;
         }
         
-        public function removeResponseNeighborWithWord(word:String):Boolean
+        public function removeTargetWithWord(word:String):Boolean
         {
-            var index:int = getIndexForNeighborWithWord(responseNeighbors, word);
+            var index:int = getIndexForNeighborWithWord(targets, word);
             
             if (index > -1)
             {
-                responseNeighbors.splice(index, 1);
+                targets.splice(index, 1);
                 return true;
             }
             
             return false;
         }
         
-        public function getResponseNeighborWithWord(word:String):Node
+        public function getTargetWithWord(word:String):Node
         {
-            var index:int = getIndexForNeighborWithWord(responseNeighbors, word);
+            var index:int = getIndexForNeighborWithWord(targets, word);
             
             if (index > -1)
-                return responseNeighbors[index] as Node;
+                return targets[index] as Node;
             
             return null;
         }
@@ -156,7 +171,7 @@ package org.voisen.freeassociation.data
         //
         //---------------------------------------------------------------------
         
-        private var responseNeighbors:Vector.<Node> = new Vector.<Node>();
-        private var cueNeighbors:Vector.<Node> = new Vector.<Node>();
+        private var targets:Vector.<Node> = new Vector.<Node>();
+        private var cues:Vector.<Node> = new Vector.<Node>();
     }
 }
