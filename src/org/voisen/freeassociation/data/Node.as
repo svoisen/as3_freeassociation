@@ -68,7 +68,7 @@ package org.voisen.freeassociation.data
         
         public function get targetCount():int
         {
-            return targets.length;
+            return _targets.length;
         }
         
         //---------------------------------------------------------------------
@@ -77,7 +77,7 @@ package org.voisen.freeassociation.data
         
         public function get cueCount():int
         {
-            return cues.length;
+            return _cues.length;
         }
         
         //---------------------------------------------------------------------
@@ -86,7 +86,17 @@ package org.voisen.freeassociation.data
         
         public function get targetsAsStrings():Vector.<String>
         {
-           return nodeVectorToStringVector(targets); 
+           return nodeVectorToStringVector(_targets); 
+        }
+        
+        //---------------------------------------------------------------------
+        // targets
+        //---------------------------------------------------------------------
+        
+        private var _targets:Vector.<Node> = new Vector.<Node>();
+        public function get targets():Vector.<Node>
+        {
+            return _targets;    
         }
         
         //---------------------------------------------------------------------
@@ -95,7 +105,7 @@ package org.voisen.freeassociation.data
         
         public function get cuesAsStrings():Vector.<String>
         {
-            return nodeVectorToStringVector(cues);
+            return nodeVectorToStringVector(_cues);
         }
         
         //---------------------------------------------------------------------
@@ -107,7 +117,7 @@ package org.voisen.freeassociation.data
         public function addTarget(node:Node):void
         {
             if (!hasTarget(node))
-                targets.push(node);
+                _targets.push(node);
             
             node.addCue(this);
         }
@@ -115,33 +125,33 @@ package org.voisen.freeassociation.data
         public function addCue(node:Node):void
         {
             if (!hasCue(node))
-                cues.push(node);
+                _cues.push(node);
         }
         
         public function hasTarget(node:Node):Boolean
         {
-            return targets.indexOf(node) > -1;
+            return _targets.indexOf(node) > -1;
         }
         
         public function hasCue(node:Node):Boolean
         {
-            return cues.indexOf(node) > -1;
+            return _cues.indexOf(node) > -1;
         }
         
         public function hasTargetWithWord(word:String):Boolean
         {
-            var index:int = getIndexForNeighborWithWord(targets, word);
+            var index:int = getIndexForNeighborWithWord(_targets, word);
             
             return index > -1;
         }
         
         public function removeTargetWithWord(word:String):Boolean
         {
-            var index:int = getIndexForNeighborWithWord(targets, word);
+            var index:int = getIndexForNeighborWithWord(_targets, word);
             
             if (index > -1)
             {
-                targets.splice(index, 1);
+                _targets.splice(index, 1);
                 return true;
             }
             
@@ -150,10 +160,10 @@ package org.voisen.freeassociation.data
         
         public function getTargetWithWord(word:String):Node
         {
-            var index:int = getIndexForNeighborWithWord(targets, word);
+            var index:int = getIndexForNeighborWithWord(_targets, word);
             
             if (index > -1)
-                return targets[index] as Node;
+                return _targets[index] as Node;
             
             return null;
         }
@@ -193,7 +203,6 @@ package org.voisen.freeassociation.data
         //
         //---------------------------------------------------------------------
         
-        private var targets:Vector.<Node> = new Vector.<Node>();
-        private var cues:Vector.<Node> = new Vector.<Node>();
+        private var _cues:Vector.<Node> = new Vector.<Node>();
     }
 }

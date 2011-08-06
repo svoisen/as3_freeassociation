@@ -25,6 +25,7 @@ package test.org.voisen.freeassociation
     import org.flexunit.assertThat;
     import org.flexunit.asserts.assertEquals;
     import org.flexunit.asserts.assertNotNull;
+    import org.flexunit.asserts.assertNull;
     import org.flexunit.asserts.assertTrue;
     import org.hamcrest.number.greaterThan;
     import org.voisen.freeassociation.FreeAssociationDatabase;
@@ -55,7 +56,7 @@ package test.org.voisen.freeassociation
         
         [Before]
         public function setUp():void
-		{
+        {
             
         }
 		
@@ -99,6 +100,38 @@ package test.org.voisen.freeassociation
         public function should_have_valid_data():void
         {
             assertThat(database.getTargetsForCue("aardvark").indexOf("ANIMAL"), greaterThan(-1));     
+        }
+        
+        [Test]
+        public function should_not_search_for_words_that_dont_exist():void
+        {
+            assertNull(database.getForwardPath("xxxxxxx", "mother"));
+            assertNull(database.getForwardPath("mother", "xxxxxxx"));
+        }
+        
+        [Test]
+        public function should_return_path_of_length_one_for_trivial_search():void
+        {
+            var path:Vector.<String> = database.getForwardPath("word", "word"); 
+            assertEquals(path.length, 1); 
+        }
+        
+        [Test]
+        public function should_return_identity_node_for_trivial_search():void
+        {
+            assertEquals(database.getForwardPath("word", "word")[0], "WORD"); 
+        }
+        
+        [Test]
+        public function should_return_correct_path():void
+        {
+           trace(database.getForwardPath("aardvark", "mother").toString()); 
+        }
+        
+        [Test]
+        public function should_return_shortest_path():void
+        {
+           trace(database.getShortestForwardPath("aardvark", "mother").toString()); 
         }
         
         //---------------------------------------------------------------------

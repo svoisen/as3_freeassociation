@@ -68,9 +68,38 @@ package org.voisen.freeassociation
             return null;
         }
         
+        public function getShortestForwardPath(startWord:String, endWord:String):Vector.<String>
+        {
+            if (!(hasWord(startWord) && hasWord(endWord)))
+                return null;
+            
+            startWord = startWord.toUpperCase();
+            endWord = endWord.toUpperCase();
+           
+            var startNode:Node = hash[startWord];
+            var startPath:Vector.<Node> = Vector.<Node>([startNode]);
+            var startQueue:Array = [startPath];
+            var visited:Object = {};
+            var endNode:Node = hash[endWord];
+            
+            return nodeVectorToStringVector(breadthFirstSearch(startQueue, endNode, visited));
+        }
+        
         public function getForwardPath(startWord:String, endWord:String):Vector.<String>
         {
-           return null; 
+            if (!(hasWord(startWord) && hasWord(endWord)))
+                return null;
+            
+            startWord = startWord.toUpperCase();
+            endWord = endWord.toUpperCase();
+            
+            var startStack:Vector.<Node> = Vector.<Node>([hash[startWord]]);
+            var endNode:Node = hash[endWord];
+            var path:Vector.<Node> = new Vector.<Node>();
+            var visited:Object = {};
+            
+            var result:Vector.<Node> = depthFirstSearch(startStack, endNode, path, visited);
+            return nodeVectorToStringVector(result);
         }
         
         //---------------------------------------------------------------------
@@ -97,6 +126,18 @@ package org.voisen.freeassociation
         //
         //---------------------------------------------------------------------
         
+        private function nodeVectorToStringVector(vector:Vector.<Node>):Vector.<String>
+        {
+            if (!vector)
+                return null;
+            
+            var result:Vector.<String> = new Vector.<String>();
+            for (var i:int = 0; i < vector.length; i++)
+                result.push(vector[i].word);
+            
+            return result;
+        }
+        
         private function addDataFromRow(row:String):void
         {
             var data:Array = row.split(', '); 
@@ -122,11 +163,53 @@ package org.voisen.freeassociation
             return newNode;
         }
         
-        private function depthFirstSearch(startNode:Node, endNode:String):Vector.<Node>
+        private function breadthFirstSearch(queue:Array, endNode:Node, visited:Object):Vector.<Node>
         {
-            var stack:Vector.<Node> = Vector.<Node>([startNode]);
+            if (queue.length == 0)
+                return null;
             
-            return null;
+            var curPath:Vector.<Node> = queue.shift();
+            var curNode:Node = curPath[curPath.length - 1];
+            visited[curNode.word] = true; 
+            
+            if (curNode == endNode)
+                return curPath;
+            
+            for (var i:int = 0; i < curNode.targets.length; i++)
+            {
+                var target:Node = curNode.targets[i];
+                if (!(target.word in visited))
+                    queue.push(curPath.concat(Vector.<Node>([target])));
+            }
+            
+            return breadthFirstSearch(queue, endNode, visited);
+        }
+        
+        private function depthFirstSearch(stack:Vector.<Node>, endNode:Node, path:Vector.<Node>, visited:Object):Vector.<Node>
+        {
+            var curNode:Node = stack.shift();
+            path.push(curNode);
+            visited[curNode.word] = true;
+            
+            if (curNode == endNode)
+                return path;
+            
+            var pushedTargets:Boolean = false;
+            var targetsLength:int = curNode.targets.length;
+            for (var i:int = 0; i < targetsLength; i++)
+            {
+                var target:Node = curNode.targets[i];
+                if (!(target.word in visited))
+                {
+                    pushedTargets = true;
+                    stack.push(target);
+                }
+            }
+            
+            if (!pushedTargets)
+                path.pop();
+            
+            return depthFirstSearch(stack, endNode, path, visited);
         }
         
         //---------------------------------------------------------------------
