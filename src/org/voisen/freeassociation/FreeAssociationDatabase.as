@@ -24,6 +24,9 @@ package org.voisen.freeassociation
 {
     import org.voisen.freeassociation.data.CSVData;
     import org.voisen.freeassociation.data.Node;
+    import org.voisen.freeassociation.search.BreadthFirstSearcher;
+    import org.voisen.freeassociation.search.DepthFirstSearcher;
+    import org.voisen.freeassociation.search.SearchTypes;
 
     public class FreeAssociationDatabase
     {
@@ -54,13 +57,13 @@ package org.voisen.freeassociation
         public function hasWord(word:String):Boolean
         {
             word = word.toUpperCase();
-            return (word in hash);
+            return (word in graph);
         }
         
         public function getTargetsForCue(word:String):Vector.<String>
         {
             word = word.toUpperCase();
-            var cueNode:Node = hash[word];
+            var cueNode:Node = graph[word];
             
             if (cueNode)
                return cueNode.targetsAsStrings;
@@ -68,37 +71,24 @@ package org.voisen.freeassociation
             return null;
         }
         
-        public function getShortestForwardPath(startWord:String, endWord:String):Vector.<String>
+        public function getCueTargetPath(start:String, end:String, searchType:String = "bfs"):Vector.<String>
         {
-            if (!(hasWord(startWord) && hasWord(endWord)))
+            if (!(hasWord(start) && hasWord(end)))
                 return null;
             
-            startWord = startWord.toUpperCase();
-            endWord = endWord.toUpperCase();
-           
-            var startNode:Node = hash[startWord];
-            var startPath:Vector.<Node> = Vector.<Node>([startNode]);
-            var startQueue:Array = [startPath];
-            var visited:Object = {};
-            var endNode:Node = hash[endWord];
+            var startNode:Node = graph[start.toUpperCase()];
+            var endNode:Node = graph[end.toUpperCase()];
+            var result:Vector.<Node>;
             
-            return nodeVectorToStringVector(breadthFirstSearch(startQueue, endNode, visited));
-        }
-        
-        public function getForwardPath(startWord:String, endWord:String):Vector.<String>
-        {
-            if (!(hasWord(startWord) && hasWord(endWord)))
-                return null;
+            if (searchType == SearchTypes.BFS)
+            {
+                result = new BreadthFirstSearcher().search(startNode, endNode);
+            }
+            else if (searchType == SearchTypes.DFS)
+            {
+                result = new DepthFirstSearcher().search(startNode, endNode);
+            }
             
-            startWord = startWord.toUpperCase();
-            endWord = endWord.toUpperCase();
-            
-            var startStack:Vector.<Node> = Vector.<Node>([hash[startWord]]);
-            var endNode:Node = hash[endWord];
-            var path:Vector.<Node> = new Vector.<Node>();
-            var visited:Object = {};
-            
-            var result:Vector.<Node> = depthFirstSearch(startStack, endNode, path, visited);
             return nodeVectorToStringVector(result);
         }
         
@@ -143,8 +133,8 @@ package org.voisen.freeassociation
             var data:Array = row.split(', '); 
             var cue:String = data[0];
             var target:String = data[1];
-            var cueNode:Node = hash[cue];
-            var targetNode:Node = hash[target];
+            var cueNode:Node = graph[cue];
+            var targetNode:Node = graph[target];
             
             if (!cueNode)
                 cueNode = addNode(cue);
@@ -158,58 +148,9 @@ package org.voisen.freeassociation
         private function addNode(word:String):Node
         {
             var newNode:Node = new Node(word);
-            hash[word] = newNode;
+            graph[word] = newNode;
             _wordCount++;
             return newNode;
-        }
-        
-        private function breadthFirstSearch(queue:Array, endNode:Node, visited:Object):Vector.<Node>
-        {
-            if (queue.length == 0)
-                return null;
-            
-            var curPath:Vector.<Node> = queue.shift();
-            var curNode:Node = curPath[curPath.length - 1];
-            visited[curNode.word] = true; 
-            
-            if (curNode == endNode)
-                return curPath;
-            
-            for (var i:int = 0; i < curNode.targets.length; i++)
-            {
-                var target:Node = curNode.targets[i];
-                if (!(target.word in visited))
-                    queue.push(curPath.concat(Vector.<Node>([target])));
-            }
-            
-            return breadthFirstSearch(queue, endNode, visited);
-        }
-        
-        private function depthFirstSearch(stack:Vector.<Node>, endNode:Node, path:Vector.<Node>, visited:Object):Vector.<Node>
-        {
-            var curNode:Node = stack.shift();
-            path.push(curNode);
-            visited[curNode.word] = true;
-            
-            if (curNode == endNode)
-                return path;
-            
-            var pushedTargets:Boolean = false;
-            var targetsLength:int = curNode.targets.length;
-            for (var i:int = 0; i < targetsLength; i++)
-            {
-                var target:Node = curNode.targets[i];
-                if (!(target.word in visited))
-                {
-                    pushedTargets = true;
-                    stack.push(target);
-                }
-            }
-            
-            if (!pushedTargets)
-                path.pop();
-            
-            return depthFirstSearch(stack, endNode, path, visited);
         }
         
         //---------------------------------------------------------------------
@@ -218,6 +159,6 @@ package org.voisen.freeassociation
         //
         //---------------------------------------------------------------------
         
-        private var hash:Object = new Object();
+        private var graph:Object = new Object();
     }
 }

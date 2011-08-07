@@ -29,9 +29,7 @@ package test.org.voisen.freeassociation
     import org.flexunit.asserts.assertTrue;
     import org.hamcrest.number.greaterThan;
     import org.voisen.freeassociation.FreeAssociationDatabase;
-    import org.voisen.freeassociation.data.CSVData;
-    
-    import test.org.voisen.freeassociation.data.CSVDataTest;
+    import org.voisen.freeassociation.search.SearchTypes;
 
     public class FreeAssociationDatabaseTest
     {		
@@ -105,33 +103,53 @@ package test.org.voisen.freeassociation
         [Test]
         public function should_not_search_for_words_that_dont_exist():void
         {
-            assertNull(database.getForwardPath("xxxxxxx", "mother"));
-            assertNull(database.getForwardPath("mother", "xxxxxxx"));
+            assertNull(database.getCueTargetPath("xxxxxxx", "mother"));
+            assertNull(database.getCueTargetPath("mother", "xxxxxxx"));
         }
         
         [Test]
-        public function should_return_path_of_length_one_for_trivial_search():void
+        public function should_return_path_of_length_one_for_trivial_dfs():void
         {
-            var path:Vector.<String> = database.getForwardPath("word", "word"); 
+            var path:Vector.<String> = database.getCueTargetPath("word", "word", SearchTypes.DFS); 
             assertEquals(path.length, 1); 
         }
         
         [Test]
-        public function should_return_identity_node_for_trivial_search():void
+        public function should_return_identity_node_for_trivial_dfs():void
         {
-            assertEquals(database.getForwardPath("word", "word")[0], "WORD"); 
+            assertEquals(database.getCueTargetPath("word", "word", SearchTypes.DFS)[0], "WORD"); 
         }
         
         [Test]
-        public function should_return_correct_path():void
+        public function should_return_correct_path_for_short_dfs():void
         {
-           trace(database.getForwardPath("aardvark", "mother").toString()); 
+            assertEquals(database.getCueTargetPath("aardvark", "animal", SearchTypes.DFS).length, 2);
         }
         
         [Test]
-        public function should_return_shortest_path():void
+        public function should_return_correct_path_for_medium_dfs():void
         {
-           trace(database.getShortestForwardPath("aardvark", "mother").toString()); 
+            var path:Vector.<String> = database.getCueTargetPath("aardvark", "dog", SearchTypes.DFS);
+            assertEquals(path.length, 3);
+            assertEquals(path[0], "AARDVARK");
+        }
+        
+        [Test]
+        public function should_return_correct_path_for_short_bfs():void
+        {
+            assertEquals(database.getCueTargetPath("aardvark", "zoo").length, 2);
+        }
+        
+        [Test]
+        public function should_return_correct_path_for_medium_bfs():void
+        {
+            var path:Vector.<String> = database.getCueTargetPath("aardvark", "mother");
+            
+            assertEquals(path.length, 4);
+            assertEquals(path[0], "AARDVARK");
+            assertEquals(path[1], "ZOO");
+            assertEquals(path[2], "KEEPER");
+            assertEquals(path[3], "MOTHER");
         }
         
         //---------------------------------------------------------------------
