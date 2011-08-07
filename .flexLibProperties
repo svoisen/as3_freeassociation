@@ -7,6 +7,12 @@
     <classEntry path="test.org.voisen.freeassociation.data.CSVDataTest"/>
     <classEntry path="org.voisen.freeassociation.data.Node"/>
     <classEntry path="test.org.voisen.freeassociation.data.NodeTest"/>
+    <classEntry path="org.voisen.freeassociation.search.SearchTypes"/>
+    <classEntry path="org.voisen.freeassociation.search.ISearcher"/>
+    <classEntry path="org.voisen.freeassociation.search.BreadthFirstSearcher"/>
+    <classEntry path="org.voisen.freeassociation.search.DepthFirstSearcher"/>
+    <classEntry path="org.voisen.freeassociation.data.Graph"/>
+    <classEntry path="test.org.voisen.freeassociation.data.GraphTest"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

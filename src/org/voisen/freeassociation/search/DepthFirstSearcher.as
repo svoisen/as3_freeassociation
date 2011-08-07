@@ -32,49 +32,67 @@ package org.voisen.freeassociation.search
         //
         //---------------------------------------------------------------------
         
-        public function search(start:Node, end:Node):Vector.<Node>
+        public function search(start:Node, end:Node, maxDepth:int = 5):Vector.<Node>
         {
-            var startStack:Vector.<Node> = Vector.<Node>([start]);
-            var path:Vector.<Node> = new Vector.<Node>();
-            var visited:Object = {};
-            
-            return depthFirstSearch(startStack, end, path, visited);
+            setupSearch(start, end, maxDepth);
+            return performSearch();
         }
-        
+
         //---------------------------------------------------------------------
         //
         // Private Methods
         //
         //---------------------------------------------------------------------
         
-        private function depthFirstSearch(stack:Vector.<Node>, endNode:Node, path:Vector.<Node>, visited:Object):Vector.<Node>
+        private function setupSearch(start:Node, end:Node, maxDepth:int):void
         {
-            if (stack.length == 0)
-                return null;
-            
-            var curNode:Node = stack.pop();
-            path.push(curNode);
-            visited[curNode.word] = true;
-            
-            if (curNode == endNode)
-                return path;
-            
-            var pushedTargets:Boolean = false;
-            var targetsLength:int = curNode.targets.length;
-            for (var i:int = 0; i < targetsLength; i++)
-            {
-                var target:Node = curNode.targets[i];
-                if (!(target.word in visited))
-                {
-                    pushedTargets = true;
-                    stack.push(target);
-                }
-            }
-            
-            if (!pushedTargets)
-                path.pop();
-            
-            return depthFirstSearch(stack, endNode, path, visited);
+            stack = Vector.<Node>([start]);
+            path = new Vector.<Node>();
+            visited = new Object();
+            endNode = end;
+            this.maxDepth = maxDepth;
         }
+        
+        private function performSearch():Vector.<Node>
+        {
+            while (stack.length > 0)
+            {
+                var curNode:Node = stack.pop();
+                path.push(curNode);
+                visited[curNode.word] = true;
+                
+                if (curNode == endNode)
+                    return path;
+                
+                var pushedTargets:Boolean = false;
+                var targetsLength:int = curNode.targets.length;
+                for (var i:int = 0; i < targetsLength && path.length < maxDepth; i++)
+                {
+                    var target:Node = curNode.targets[i];
+                    if (!(target.word in visited))
+                    {
+                        pushedTargets = true;
+                        stack.push(target);
+                    }
+                }
+                
+                if (!pushedTargets)
+                    path.pop();
+            }
+                
+            return null;
+        }
+        
+        //---------------------------------------------------------------------
+        //
+        // Properties
+        //
+        //---------------------------------------------------------------------
+        
+        private var stack:Vector.<Node>;
+        private var path:Vector.<Node>;
+        private var visited:Object;
+        private var maxDepth:int; 
+        private var endNode:Node;
     }
 }

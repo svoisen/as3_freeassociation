@@ -20,12 +20,44 @@
  * IN THE SOFTWARE.
  */
 
-package org.voisen.freeassociation.search
+package test.org.voisen.freeassociation.data
 {
-    import org.voisen.freeassociation.data.Node;
+    import org.flexunit.asserts.assertNotNull;
+    import org.voisen.freeassociation.data.Graph;
 
-    public interface ISearcher
+    public class GraphTest
     {
-        function search(start:Node, end:Node, maxDepth:int = 5):Vector.<Node>;    
+        [Before]
+        public function setUp():void
+        {
+            graph = new Graph(); 
+        }
+        
+        [After]
+        public function tearDown():void
+        {
+            graph = null; 
+        }
+        
+        [Test]
+        public function should_instantiate():void
+        {
+            assertNotNull(graph); 
+        }
+        
+        [Test]
+        public function should_populate_with_csv_data():void
+        {
+            
+            
+        }
+        
+        //---------------------------------------------------------------------
+        //
+        // Properties
+        //
+        //---------------------------------------------------------------------
+        
+        private var graph:Graph;
     }
 }

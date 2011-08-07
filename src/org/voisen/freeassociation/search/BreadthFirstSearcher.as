@@ -32,14 +32,10 @@ package org.voisen.freeassociation.search
         //
         //---------------------------------------------------------------------
         
-        public function search(start:Node, end:Node):Vector.<Node>
+        public function search(start:Node, end:Node, maxDepth:int = 5):Vector.<Node>
         {
-            var startPath:Vector.<Node> = Vector.<Node>([start]);
-            // Queue is an array of paths
-            var startQueue:Array = [startPath];
-            var visited:Object = {};
-            
-            return breadthFirstSearch(startQueue, end, visited);
+            setupSearch(start,end,maxDepth);
+            return performSearch();
         }
         
         //---------------------------------------------------------------------
@@ -48,26 +44,52 @@ package org.voisen.freeassociation.search
         //
         //---------------------------------------------------------------------
         
-        private function breadthFirstSearch(queue:Array, endNode:Node, visited:Object):Vector.<Node>
+        private function setupSearch(start:Node, end:Node, maxDepth:int):void
         {
-            if (queue.length == 0)
-                return null;
-            
-            var curPath:Vector.<Node> = queue.shift();
-            var curNode:Node = curPath[curPath.length - 1];
-            visited[curNode.word] = true; 
-            
-            if (curNode == endNode)
-                return curPath;
-            
-            for (var i:int = 0; i < curNode.targets.length; i++)
+            var startPath:Vector.<Node> = Vector.<Node>([start]);
+            // Queue is an array of paths
+            queue = [startPath];
+            visited = new Object();
+            endNode = end;
+            this.maxDepth = maxDepth;
+        }
+
+        private function performSearch():Vector.<Node>
+        {
+            while (queue.length > 0)
             {
-                var target:Node = curNode.targets[i];
-                if (!(target.word in visited))
-                    queue.push(curPath.concat(Vector.<Node>([target])));
+                var curPath:Vector.<Node> = queue.shift(); 
+                
+                if (curPath.length > maxDepth)
+                    return null;
+                
+                var curNode:Node = curPath[curPath.length - 1];
+                visited[curNode.word] = true; 
+            
+                if (curNode == endNode)
+                    return curPath;
+                
+                var targetsCount:int = curNode.targets.length;
+                for (var i:int = 0; i < targetsCount; i++)
+                {
+                    var target:Node = curNode.targets[i];
+                    if (!(target.word in visited))
+                        queue.push(curPath.concat(Vector.<Node>([target])));
+                }
             }
             
-            return breadthFirstSearch(queue, endNode, visited);
+            return null;
         }
+        
+        //---------------------------------------------------------------------
+        //
+        // Properties
+        //
+        //---------------------------------------------------------------------
+        
+        private var queue:Array;
+        private var visited:Object;
+        private var endNode:Node;
+        private var maxDepth:int;
     }
 }
