@@ -30,6 +30,7 @@ package test.org.voisen.freeassociation
     import org.hamcrest.number.greaterThan;
     import org.voisen.freeassociation.FreeAssociationDatabase;
     import org.voisen.freeassociation.data.FullUSFData;
+    import org.voisen.freeassociation.data.MinimalUSFData;
     import org.voisen.freeassociation.search.SearchTypes;
 
     public class FreeAssociationDatabaseTest
@@ -44,7 +45,7 @@ package test.org.voisen.freeassociation
         public static function setUpClass():void
         {
             database = new FreeAssociationDatabase();
-            database.initialize(new FullUSFData());
+            database.initialize(new MinimalUSFData());
         }
         
         [AfterClass]

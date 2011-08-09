@@ -24,25 +24,17 @@ package org.voisen.freeassociation.data
 {
     import flash.utils.ByteArray;
 
-    public class FullUSFData implements ICSVData
+    public class FullUSFData extends BaseCSVData implements ICSVData
     {
         [Embed(source="assets/data.csv", mimeType="application/octet-stream")]
         private const RawData:Class;
         
-        public function get rows():Vector.<String>
+        override public function get rows():Vector.<String>
         {
             if (!_rows)
-                populateRows(); 
+                populateRows(new RawData() as ByteArray);
             
             return _rows;
         }
-
-        private function populateRows():void
-        {
-            var bytes:ByteArray = new RawData() as ByteArray;
-            _rows = Vector.<String>(bytes.readUTFBytes(bytes.length).split('\n'));
-        }
-        
-        private var _rows:Vector.<String>;
     }
 }

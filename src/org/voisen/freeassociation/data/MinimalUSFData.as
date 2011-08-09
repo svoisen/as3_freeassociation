@@ -22,10 +22,19 @@
 
 package org.voisen.freeassociation.data
 {
-    public class MinimalUSFData
+    import flash.utils.ByteArray;
+
+    public class MinimalUSFData extends BaseCSVData implements ICSVData
     {
-        public function MinimalUSFData()
+        [Embed(source="assets/minimal_data.csv", mimeType="application/octet-stream")]
+        private const RawData:Class;
+        
+        override public function get rows():Vector.<String>
         {
+            if (!_rows)
+                populateRows(new RawData() as ByteArray);
+            
+            return _rows;
         }
     }
 }
