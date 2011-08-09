@@ -22,7 +22,7 @@
 
 package org.voisen.freeassociation.search
 {
-    import org.voisen.freeassociation.data.Node;
+    import org.voisen.freeassociation.graph.Node;
 
     public class BreadthFirstSearcher implements ISearcher
     {

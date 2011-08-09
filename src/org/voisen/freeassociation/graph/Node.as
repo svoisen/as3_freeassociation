@@ -20,7 +20,7 @@
  * IN THE SOFTWARE.
  */
 
-package org.voisen.freeassociation.data
+package org.voisen.freeassociation.graph
 {
     public class Node
     {

@@ -20,12 +20,12 @@
  * IN THE SOFTWARE.
  */
 
-package org.voisen.freeassociation.search
+package org.voisen.freeassociation.data
 {
-    import org.voisen.freeassociation.graph.Node;
-
-    public interface ISearcher
+    public class MinimalUSFData
     {
-        function search(start:Node, end:Node, maxDepth:int = 5):Vector.<Node>;    
+        public function MinimalUSFData()
+        {
+        }
     }
 }

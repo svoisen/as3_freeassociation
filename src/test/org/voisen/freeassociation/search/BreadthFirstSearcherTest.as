@@ -20,33 +20,12 @@
  * IN THE SOFTWARE.
  */
 
-package org.voisen.freeassociation.data
+package test.org.voisen.freeassociation.search
 {
-    import flash.utils.ByteArray;
-
-    public class CSVData
+    public class BreadthFirstSearcherTest
     {
-        [Embed(source="assets/data.csv", mimeType="application/octet-stream")]
-        private const RawData:Class;
-        
-        private var _rows:Vector.<String>;
-        
-        public function CSVData()
+        public function BreadthFirstSearcherTest()
         {
-        }
-
-        public function get rows():Vector.<String>
-        {
-            if (!_rows)
-                populateRows(); 
-            
-            return _rows;
-        }
-
-        private function populateRows():void
-        {
-            var bytes:ByteArray = new RawData() as ByteArray;
-            _rows = Vector.<String>(bytes.readUTFBytes(bytes.length).split('\n'));
         }
     }
 }

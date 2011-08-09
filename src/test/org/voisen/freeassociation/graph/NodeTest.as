@@ -20,13 +20,13 @@
  * IN THE SOFTWARE.
  */
 
-package test.org.voisen.freeassociation.data
+package test.org.voisen.freeassociation.graph
 {
     import org.flexunit.assertThat;
     import org.flexunit.asserts.assertEquals;
     import org.flexunit.asserts.assertTrue;
     import org.hamcrest.core.isA;
-    import org.voisen.freeassociation.data.Node;
+    import org.voisen.freeassociation.graph.Node;
 
     public class NodeTest
     {

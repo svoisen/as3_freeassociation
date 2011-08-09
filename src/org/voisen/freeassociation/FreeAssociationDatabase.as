@@ -22,8 +22,10 @@
 
 package org.voisen.freeassociation
 {
-    import org.voisen.freeassociation.data.CSVData;
-    import org.voisen.freeassociation.data.Node;
+    import org.voisen.freeassociation.data.FullUSFData;
+    import org.voisen.freeassociation.graph.Graph;
+    import org.voisen.freeassociation.data.ICSVData;
+    import org.voisen.freeassociation.graph.Node;
     import org.voisen.freeassociation.search.BreadthFirstSearcher;
     import org.voisen.freeassociation.search.DepthFirstSearcher;
     import org.voisen.freeassociation.search.SearchTypes;
@@ -46,9 +48,9 @@ package org.voisen.freeassociation
         //
         //---------------------------------------------------------------------
         
-        public function initialize():void
+        public function initialize(data:ICSVData):void
         {
-            var rows:Vector.<String> = new CSVData().rows;
+            var rows:Vector.<String> = data.rows;
             
             for (var i:int = rows.length - 1; i >= 0; i--)
                 addDataFromRow(rows[i]);        
@@ -57,13 +59,13 @@ package org.voisen.freeassociation
         public function hasWord(word:String):Boolean
         {
             word = word.toUpperCase();
-            return (word in graph);
+            return graph.hasNode(word);
         }
         
         public function getTargetsForCue(word:String):Vector.<String>
         {
             word = word.toUpperCase();
-            var cueNode:Node = graph[word];
+            var cueNode:Node = graph.getNode(word);
             
             if (cueNode)
                return cueNode.targetsAsStrings;
@@ -76,8 +78,8 @@ package org.voisen.freeassociation
             if (!(hasWord(start) && hasWord(end)))
                 return null;
             
-            var startNode:Node = graph[start.toUpperCase()];
-            var endNode:Node = graph[end.toUpperCase()];
+            var startNode:Node = graph.getNode(start.toUpperCase());
+            var endNode:Node = graph.getNode(end.toUpperCase());
             var result:Vector.<Node>;
             
             if (searchType == SearchTypes.BFS)
@@ -102,12 +104,9 @@ package org.voisen.freeassociation
         // wordCount
         //---------------------------------------------------------------------
         
-        // wordCount is same as nodeCount, but we expose as wordCount for
-        // user-friendliness
-        private var _wordCount:int = 0;
         public function get wordCount():int
         {
-            return _wordCount;
+            return graph.nodeCount;
         }
        
         //---------------------------------------------------------------------
@@ -133,24 +132,8 @@ package org.voisen.freeassociation
             var data:Array = row.split(', '); 
             var cue:String = data[0];
             var target:String = data[1];
-            var cueNode:Node = graph[cue];
-            var targetNode:Node = graph[target];
             
-            if (!cueNode)
-                cueNode = addNode(cue);
-            
-            if (!targetNode)
-                targetNode = addNode(target);
-            
-            cueNode.addTarget(targetNode);
-        }
-        
-        private function addNode(word:String):Node
-        {
-            var newNode:Node = new Node(word);
-            graph[word] = newNode;
-            _wordCount++;
-            return newNode;
+            graph.addEdge(cue, target); 
         }
         
         //---------------------------------------------------------------------
@@ -159,6 +142,6 @@ package org.voisen.freeassociation
         //
         //---------------------------------------------------------------------
         
-        private var graph:Object = new Object();
+        private var graph:Graph = new Graph();
     }
 }

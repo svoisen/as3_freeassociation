@@ -20,42 +20,51 @@
  * IN THE SOFTWARE.
  */
 
-package test.org.voisen.freeassociation.data
+package test.org.voisen.freeassociation.graph
 {
-    import org.flexunit.assertThat;
+    import org.flexunit.asserts.assertEquals;
     import org.flexunit.asserts.assertNotNull;
-    import org.hamcrest.object.equalTo;
-    import org.voisen.freeassociation.data.FullUSFData;
+    import org.voisen.freeassociation.graph.Graph;
 
-    public class CSVDataTest
-    {		
-        private var csvData:FullUSFData;
-        
-        private static const CSV_DATA_ROW_COUNT:int = 72176;
-        
+    public class GraphTest
+    {
         [Before]
         public function setUp():void
         {
-            csvData = new FullUSFData();
+            graph = new Graph(); 
         }
         
         [After]
         public function tearDown():void
         {
-            csvData = null;
+            graph = null; 
         }
         
         [Test]
-        public function should_be_able_to_instantiate():void
+        public function should_instantiate():void
         {
-           assertNotNull(csvData); 
+            assertNotNull(graph); 
         }
         
         [Test]
-        public function should_be_able_to_get_rows():void
+        public function node_count_should_be_0_on_instantiation():void
         {
-            assertNotNull(csvData.rows);
-            assertThat(csvData.rows.length, equalTo(CSV_DATA_ROW_COUNT));
+            assertEquals(graph.nodeCount, 0);
         }
+        
+        [Test]
+        public function node_count_should_be_2_after_adding_edge():void
+        {
+            graph.addEdge("a", "b");
+            assertEquals(graph.nodeCount, 2);
+        }
+        
+        //---------------------------------------------------------------------
+        //
+        // Properties
+        //
+        //---------------------------------------------------------------------
+        
+        private var graph:Graph;
     }
 }

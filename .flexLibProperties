@@ -3,16 +3,19 @@
   <includeClasses>
     <classEntry path="org.voisen.freeassociation.FreeAssociationDatabase"/>
     <classEntry path="test.org.voisen.freeassociation.FreeAssociationDatabaseTest"/>
-    <classEntry path="org.voisen.freeassociation.data.CSVData"/>
+    <classEntry path="org.voisen.freeassociation.data.FullUSFData"/>
     <classEntry path="test.org.voisen.freeassociation.data.CSVDataTest"/>
-    <classEntry path="org.voisen.freeassociation.data.Node"/>
-    <classEntry path="test.org.voisen.freeassociation.data.NodeTest"/>
+    <classEntry path="org.voisen.freeassociation.graph.Node"/>
+    <classEntry path="test.org.voisen.freeassociation.graph.NodeTest"/>
     <classEntry path="org.voisen.freeassociation.search.SearchTypes"/>
     <classEntry path="org.voisen.freeassociation.search.ISearcher"/>
     <classEntry path="org.voisen.freeassociation.search.BreadthFirstSearcher"/>
     <classEntry path="org.voisen.freeassociation.search.DepthFirstSearcher"/>
-    <classEntry path="org.voisen.freeassociation.data.Graph"/>
-    <classEntry path="test.org.voisen.freeassociation.data.GraphTest"/>
+    <classEntry path="org.voisen.freeassociation.graph.Graph"/>
+    <classEntry path="test.org.voisen.freeassociation.graph.GraphTest"/>
+    <classEntry path="test.org.voisen.freeassociation.search.BreadthFirstSearcherTest"/>
+    <classEntry path="org.voisen.freeassociation.data.ICSVData"/>
+    <classEntry path="org.voisen.freeassociation.data.MinimalUSFData"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

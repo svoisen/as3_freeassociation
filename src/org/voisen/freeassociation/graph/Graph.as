@@ -20,11 +20,10 @@
  * IN THE SOFTWARE.
  */
 
-package org.voisen.freeassociation.search
+package org.voisen.freeassociation.graph
 {
-    import org.voisen.freeassociation.graph.Node;
-    
-    public class DepthFirstSearcher implements ISearcher
+
+    public class Graph
     {
         //---------------------------------------------------------------------
         //
@@ -32,56 +31,54 @@ package org.voisen.freeassociation.search
         //
         //---------------------------------------------------------------------
         
-        public function search(start:Node, end:Node, maxDepth:int = 5):Vector.<Node>
+        public function addEdge(cue:String, target:String):void
         {
-            setupSearch(start, end, maxDepth);
-            return performSearch();
+            var cueNode:Node = hash[cue];
+            var targetNode:Node = hash[target];
+            
+            if (!cueNode)
+                cueNode = addNode(cue);
+            
+            if (!targetNode)
+                targetNode = addNode(target);
+            
+            cueNode.addTarget(targetNode);
         }
-
+        
+        public function hasNode(word:String):Boolean
+        {
+            return (word in hash); 
+        }
+        
+        public function getNode(word:String):Node
+        {
+            return hash[word];
+        }
+        
+        //---------------------------------------------------------------------
+        //
+        // Mutators
+        //
+        //---------------------------------------------------------------------
+        
+        public function get nodeCount():int
+        {
+            return _nodeCount; 
+        }
+        
         //---------------------------------------------------------------------
         //
         // Private Methods
         //
         //---------------------------------------------------------------------
         
-        private function setupSearch(start:Node, end:Node, maxDepth:int):void
+        private function addNode(word:String):Node
         {
-            stack = Vector.<Node>([start]);
-            path = new Vector.<Node>();
-            visited = new Object();
-            endNode = end;
-            this.maxDepth = maxDepth;
-        }
-        
-        private function performSearch():Vector.<Node>
-        {
-            while (stack.length > 0)
-            {
-                var curNode:Node = stack.pop();
-                path.push(curNode);
-                visited[curNode.word] = true;
-                
-                if (curNode == endNode)
-                    return path;
-                
-                var pushedTargets:Boolean = false;
-                var targetsLength:int = curNode.targets.length;
-                for (var i:int = 0; i < targetsLength && path.length < maxDepth; i++)
-                {
-                    var target:Node = curNode.targets[i];
-                    if (!(target.word in visited))
-                    {
-                        pushedTargets = true;
-                        stack.push(target);
-                    }
-                }
-                
-                if (!pushedTargets)
-                    path.pop();
-            }
-                
-            return null;
-        }
+            var newNode:Node = new Node(word);
+            hash[word] = newNode;
+            _nodeCount++;
+            return newNode;
+        } 
         
         //---------------------------------------------------------------------
         //
@@ -89,10 +86,7 @@ package org.voisen.freeassociation.search
         //
         //---------------------------------------------------------------------
         
-        private var stack:Vector.<Node>;
-        private var path:Vector.<Node>;
-        private var visited:Object;
-        private var maxDepth:int; 
-        private var endNode:Node;
+        private var hash:Object = new Object();
+        private var _nodeCount:int = 0;
     }
 }

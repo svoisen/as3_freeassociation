@@ -20,44 +20,29 @@
  * IN THE SOFTWARE.
  */
 
-package test.org.voisen.freeassociation.data
+package org.voisen.freeassociation.data
 {
-    import org.flexunit.asserts.assertNotNull;
-    import org.voisen.freeassociation.data.Graph;
+    import flash.utils.ByteArray;
 
-    public class GraphTest
+    public class FullUSFData implements ICSVData
     {
-        [Before]
-        public function setUp():void
-        {
-            graph = new Graph(); 
-        }
+        [Embed(source="assets/data.csv", mimeType="application/octet-stream")]
+        private const RawData:Class;
         
-        [After]
-        public function tearDown():void
+        public function get rows():Vector.<String>
         {
-            graph = null; 
-        }
-        
-        [Test]
-        public function should_instantiate():void
-        {
-            assertNotNull(graph); 
-        }
-        
-        [Test]
-        public function should_populate_with_csv_data():void
-        {
+            if (!_rows)
+                populateRows(); 
             
-            
+            return _rows;
+        }
+
+        private function populateRows():void
+        {
+            var bytes:ByteArray = new RawData() as ByteArray;
+            _rows = Vector.<String>(bytes.readUTFBytes(bytes.length).split('\n'));
         }
         
-        //---------------------------------------------------------------------
-        //
-        // Properties
-        //
-        //---------------------------------------------------------------------
-        
-        private var graph:Graph;
+        private var _rows:Vector.<String>;
     }
 }
