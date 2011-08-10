@@ -32,9 +32,9 @@ package org.voisen.freeassociation.search
         //
         //---------------------------------------------------------------------
         
-        public function search(start:Node, end:Node, maxDepth:int = 5):Vector.<Node>
+        public function search(start:Node, end:Node, maxDepth:int = 5, direction:String = "bidirectional"):Vector.<Node>
         {
-            setupSearch(start,end,maxDepth);
+            setupSearch(start, end, maxDepth, direction);
             return performSearch();
         }
         
@@ -44,7 +44,7 @@ package org.voisen.freeassociation.search
         //
         //---------------------------------------------------------------------
         
-        private function setupSearch(start:Node, end:Node, maxDepth:int):void
+        private function setupSearch(start:Node, end:Node, maxDepth:int, direction:String):void
         {
             var startPath:Vector.<Node> = Vector.<Node>([start]);
             // Queue is an array of paths
@@ -52,6 +52,7 @@ package org.voisen.freeassociation.search
             visited = new Object();
             endNode = end;
             this.maxDepth = maxDepth;
+            this.direction = direction;
         }
 
         private function performSearch():Vector.<Node>
@@ -69,16 +70,25 @@ package org.voisen.freeassociation.search
                 if (curNode == endNode)
                     return curPath;
                 
-                var targetsCount:int = curNode.targets.length;
-                for (var i:int = 0; i < targetsCount; i++)
-                {
-                    var target:Node = curNode.targets[i];
-                    if (!(target.word in visited))
-                        queue.push(curPath.concat(Vector.<Node>([target])));
-                }
+                if (direction == SearchDirections.FORWARD || direction == SearchDirections.BIDIRECTIONAL)
+                    enqueueNeighbors(curNode.targets, curPath);
+                
+                if (direction == SearchDirections.BACKWARD || direction == SearchDirections.BIDIRECTIONAL)
+                    enqueueNeighbors(curNode.cues, curPath);
             }
             
             return null;
+        }
+
+        private function enqueueNeighbors(neighbors:Vector.<Node>, curPath:Vector.<Node>):void
+        {
+            var neighborsCount:int = neighbors.length;
+            for (var i:int = 0; i < neighborsCount; i++)
+            {
+                var neighbor:Node = neighbors[i];
+                if (!(neighbor.word in visited))
+                    queue.push(curPath.concat(Vector.<Node>([neighbor])));
+            }
         }
         
         //---------------------------------------------------------------------
@@ -91,5 +101,6 @@ package org.voisen.freeassociation.search
         private var visited:Object;
         private var endNode:Node;
         private var maxDepth:int;
+        private var direction:String;
     }
 }

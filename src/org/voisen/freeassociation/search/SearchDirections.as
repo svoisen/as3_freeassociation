@@ -20,36 +20,12 @@
  * IN THE SOFTWARE.
  */
 
-package test.org.voisen.freeassociation.search
+package org.voisen.freeassociation.search
 {
-    import org.voisen.freeassociation.search.BreadthFirstSearcher;
-
-    public class BreadthFirstSearcherTest
+    public class SearchDirections
     {
-        [Before]
-        public function setUp():void
-        {
-            searcher = new BreadthFirstSearcher(); 
-        }
-        
-        [After]
-        public function tearDown():void
-        {
-            searcher = null;
-        }
-        
-        [Test]
-        public function should_search_in_forward_direction():void
-        {
-            
-        }
-        
-        //---------------------------------------------------------------------
-        //
-        // Properties
-        //
-        //---------------------------------------------------------------------
-        
-        private var searcher:BreadthFirstSearcher;
+        public static const FORWARD:String = "forward";
+        public static const BACKWARD:String = "backward";
+        public static const BIDIRECTIONAL:String = "bidirectional";
     }
 }

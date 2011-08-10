@@ -23,8 +23,8 @@
 package org.voisen.freeassociation
 {
     import org.voisen.freeassociation.data.FullUSFData;
-    import org.voisen.freeassociation.graph.Graph;
     import org.voisen.freeassociation.data.ICSVData;
+    import org.voisen.freeassociation.graph.Graph;
     import org.voisen.freeassociation.graph.Node;
     import org.voisen.freeassociation.search.BreadthFirstSearcher;
     import org.voisen.freeassociation.search.DepthFirstSearcher;
@@ -50,6 +50,7 @@ package org.voisen.freeassociation
         
         public function initialize(data:ICSVData):void
         {
+            graph = new Graph();
             var rows:Vector.<String> = data.rows;
             
             for (var i:int = rows.length - 1; i >= 0; i--)
@@ -73,7 +74,18 @@ package org.voisen.freeassociation
             return null;
         }
         
-        public function getCueTargetPath(start:String, end:String, searchType:String = "bfs"):Vector.<String>
+        public function getCuesForTarget(word:String):Vector.<String>
+        {
+            word = word.toUpperCase();
+            var targetNode:Node = graph.getNode(word);
+            
+            if (targetNode)
+                return targetNode.cuesAsStrings;
+            
+            return null;
+        }
+        
+        public function findCueTargetPath(start:String, end:String, searchType:String = "bfs"):Vector.<String>
         {
             if (!(hasWord(start) && hasWord(end)))
                 return null;
@@ -92,6 +104,11 @@ package org.voisen.freeassociation
             }
             
             return nodeVectorToStringVector(result);
+        }
+        
+        public function findTargetCuePath(start:String, end:String, searchType:String = "bfs"):Vector.<String>
+        {
+            return null; 
         }
         
         //---------------------------------------------------------------------
