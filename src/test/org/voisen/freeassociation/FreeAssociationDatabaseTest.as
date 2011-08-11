@@ -163,6 +163,32 @@ package test.org.voisen.freeassociation
             assertEquals(path[3], "MOTHER");
         }
         
+        [Test]
+        public function should_return_correct_target_cue_path_for_small_bfs():void
+        {
+            var path:Vector.<String> = database.findTargetCuePath("zoo", "aardvark");
+            
+            assertEquals(path.length, 2);
+        }
+        
+        [Test]
+        public function should_return_correct_bidirectional_path_for_small_bfs():void
+        {
+            var path:Vector.<String> = database.findPath("zoo", "aardvark");
+            
+            assertEquals(path.length, 2);
+            assertEquals(path[0], "ZOO");
+            assertEquals(path[1], "AARDVARK");
+        }
+        
+        [Test]
+        public function should_return_correct_bidirectional_path_for_medium_bfs():void
+        {
+            var path:Vector.<String> = database.findPath("word", "mother");
+            assertEquals(path.length, 3);
+            assertEquals(path[1], "ADVICE");
+        }
+        
         //---------------------------------------------------------------------
         //
         // Properties

@@ -28,6 +28,7 @@ package org.voisen.freeassociation
     import org.voisen.freeassociation.graph.Node;
     import org.voisen.freeassociation.search.BreadthFirstSearcher;
     import org.voisen.freeassociation.search.DepthFirstSearcher;
+    import org.voisen.freeassociation.search.SearchDirections;
     import org.voisen.freeassociation.search.SearchTypes;
 
     public class FreeAssociationDatabase
@@ -85,30 +86,40 @@ package org.voisen.freeassociation
             return null;
         }
         
-        public function findCueTargetPath(start:String, end:String, searchType:String = "bfs"):Vector.<String>
+        public function findCueTargetPath(start:String, end:String, searchType:String = "bfs", maxDepth:int = 5):Vector.<String>
         {
             if (!(hasWord(start) && hasWord(end)))
                 return null;
             
             var startNode:Node = graph.getNode(start.toUpperCase());
             var endNode:Node = graph.getNode(end.toUpperCase());
-            var result:Vector.<Node>;
-            
-            if (searchType == SearchTypes.BFS)
-            {
-                result = new BreadthFirstSearcher().search(startNode, endNode);
-            }
-            else if (searchType == SearchTypes.DFS)
-            {
-                result = new DepthFirstSearcher().search(startNode, endNode);
-            }
+            var result:Vector.<Node> = performSearch(startNode, endNode, maxDepth, searchType, SearchDirections.FORWARD);
             
             return nodeVectorToStringVector(result);
         }
         
-        public function findTargetCuePath(start:String, end:String, searchType:String = "bfs"):Vector.<String>
+        public function findTargetCuePath(start:String, end:String, searchType:String = "bfs", maxDepth:int = 5):Vector.<String>
         {
-            return null; 
+            if (!(hasWord(start) && hasWord(end)))
+                return null;
+            
+            var startNode:Node = graph.getNode(start.toUpperCase());
+            var endNode:Node = graph.getNode(end.toUpperCase());
+            var result:Vector.<Node> = performSearch(startNode, endNode, maxDepth, searchType, SearchDirections.BACKWARD);
+            
+            return nodeVectorToStringVector(result); 
+        }
+        
+        public function findPath(start:String, end:String, searchType:String = "bfs", maxDepth:int = 5):Vector.<String>
+        {
+            if (!(hasWord(start) && hasWord(end)))
+                return null;
+            
+            var startNode:Node = graph.getNode(start.toUpperCase());
+            var endNode:Node = graph.getNode(end.toUpperCase());
+            var result:Vector.<Node> = performSearch(startNode, endNode, maxDepth, searchType, SearchDirections.BIDIRECTIONAL);
+            
+            return nodeVectorToStringVector(result); 
         }
         
         //---------------------------------------------------------------------
@@ -151,6 +162,17 @@ package org.voisen.freeassociation
             var target:String = data[1];
             
             graph.addEdge(cue, target); 
+        }
+
+        private function performSearch(startNode:Node, endNode:Node, maxDepth:int, searchType:String, direction:String):Vector.<Node>
+        {
+            if (searchType == SearchTypes.BFS)
+                return new BreadthFirstSearcher().search(startNode, endNode, maxDepth, direction);
+            
+            if (searchType == SearchTypes.DFS)
+                return new DepthFirstSearcher().search(startNode, endNode, maxDepth, direction);
+            
+            return null;
         }
         
         //---------------------------------------------------------------------
