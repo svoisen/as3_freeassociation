@@ -12,6 +12,9 @@ Free association databases such as this may prove to be interesting resources wo
 Other cue to target semantic paths (examples chosen at random) include:
 
 RAINBOW -> BEAUTIFUL -> WOMAN -> MOTHER
+
+or 
+
 UNICORN -> WHITE -> BLACK -> DEATH
 
 Reversed (target to cue) and bidirectional paths can also be searched. For instance, the bidirectional path between "2 LIVE CREW" and "GOLD" is:
