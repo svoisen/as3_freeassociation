@@ -25,21 +25,27 @@ package test.org.voisen.freeassociation.search
     import org.flexunit.asserts.assertEquals;
     import org.voisen.freeassociation.graph.Graph;
     import org.voisen.freeassociation.graph.Node;
-    import org.voisen.freeassociation.search.BreadthFirstSearcher;
+    import org.voisen.freeassociation.search.DepthFirstSearcher;
     import org.voisen.freeassociation.search.SearchDirections;
 
-    public class BreadthFirstSearcherTest
+    public class DepthFirstSearcherTest
     {
+        //---------------------------------------------------------------------
+        //
+        // Prep
+        //
+        //---------------------------------------------------------------------
+        
         [Before]
         public function setUp():void
         {
-            searcher = new BreadthFirstSearcher(); 
+            searcher = new DepthFirstSearcher();
             graph = new Graph();
             graph.addEdge("a", "b");
             graph.addEdge("a", "c");
             graph.addEdge("b", "d");
             graph.addEdge("b", "e");
-            graph.addEdge("c", "e");
+            graph.addEdge("c", "e"); 
         }
         
         [After]
@@ -49,20 +55,24 @@ package test.org.voisen.freeassociation.search
             graph = null;
         }
         
+        //---------------------------------------------------------------------
+        //
+        // Tests
+        //
+        //---------------------------------------------------------------------
+        
         [Test]
         public function should_search_in_forward_direction():void
         {
             var path:Vector.<Node> = searcher.search(graph.getNode("a"), graph.getNode("e"), 5, SearchDirections.FORWARD);
-            
-            assertEquals(path.length, 3);
+            assertEquals(path.length, 3); 
         }
         
         [Test]
         public function should_search_in_backward_direction():void
         {
             var path:Vector.<Node> = searcher.search(graph.getNode("e"), graph.getNode("a"), 5, SearchDirections.BACKWARD);
-            
-            assertEquals(path.length, 3);
+            assertEquals(path.length, 3); 
         }
         
         //---------------------------------------------------------------------
@@ -71,7 +81,7 @@ package test.org.voisen.freeassociation.search
         //
         //---------------------------------------------------------------------
         
-        private var searcher:BreadthFirstSearcher;
+        private var searcher:DepthFirstSearcher;
         private var graph:Graph;
     }
 }

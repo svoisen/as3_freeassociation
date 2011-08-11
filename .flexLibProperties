@@ -17,6 +17,7 @@
     <classEntry path="test.org.voisen.freeassociation.graph.NodeTest"/>
     <classEntry path="test.org.voisen.freeassociation.search.BreadthFirstSearcherTest"/>
     <classEntry path="org.voisen.freeassociation.search.SearchDirections"/>
+    <classEntry path="test.org.voisen.freeassociation.search.DepthFirstSearcherTest"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

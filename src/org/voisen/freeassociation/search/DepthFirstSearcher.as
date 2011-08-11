@@ -22,6 +22,8 @@
 
 package org.voisen.freeassociation.search
 {
+    import flashx.textLayout.formats.Direction;
+    
     import org.voisen.freeassociation.graph.Node;
     
     public class DepthFirstSearcher implements ISearcher
@@ -34,7 +36,7 @@ package org.voisen.freeassociation.search
         
         public function search(start:Node, end:Node, maxDepth:int = 5, direction:String = "bidirectional"):Vector.<Node>
         {
-            setupSearch(start, end, maxDepth);
+            setupSearch(start, end, maxDepth, direction);
             return performSearch();
         }
 
@@ -44,12 +46,13 @@ package org.voisen.freeassociation.search
         //
         //---------------------------------------------------------------------
         
-        private function setupSearch(start:Node, end:Node, maxDepth:int):void
+        private function setupSearch(start:Node, end:Node, maxDepth:int, direction:String):void
         {
             stack = Vector.<Node>([start]);
             path = new Vector.<Node>();
             visited = new Object();
             endNode = end;
+            this.direction = direction; 
             this.maxDepth = maxDepth;
         }
         
@@ -65,16 +68,12 @@ package org.voisen.freeassociation.search
                     return path;
                 
                 var pushedTargets:Boolean = false;
-                var targetsLength:int = curNode.targets.length;
-                for (var i:int = 0; i < targetsLength && path.length < maxDepth; i++)
-                {
-                    var target:Node = curNode.targets[i];
-                    if (!(target.word in visited))
-                    {
-                        pushedTargets = true;
-                        stack.push(target);
-                    }
-                }
+                
+                if (direction == SearchDirections.BIDIRECTIONAL || direction == SearchDirections.FORWARD)
+                    pushedTargets = pushedTargets || pushNeighbors(curNode.targets);
+                
+                if (direction == SearchDirections.BIDIRECTIONAL || direction == SearchDirections.BACKWARD)
+                    pushedTargets = pushedTargets || pushNeighbors(curNode.cues);
                 
                 if (!pushedTargets)
                     path.pop();
@@ -82,6 +81,25 @@ package org.voisen.freeassociation.search
                 
             return null;
         }
+
+
+        private function pushNeighbors(neighbors:Vector.<Node>):Boolean
+        {
+            var pushed:Boolean = false;
+            var neighborsLength:int = neighbors.length; 
+            for (var i:int = 0; i < neighborsLength && path.length < maxDepth; i++)
+            {
+                var neighbor:Node = neighbors[i];
+                if (!(neighbor.word in visited))
+                {
+                    pushed = true;
+                    stack.push(neighbor);
+                }
+            }
+            
+            return pushed;
+        }
+
         
         //---------------------------------------------------------------------
         //
@@ -94,5 +112,6 @@ package org.voisen.freeassociation.search
         private var visited:Object;
         private var maxDepth:int; 
         private var endNode:Node;
+        private var direction:String;
     }
 }
