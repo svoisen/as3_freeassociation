@@ -26,6 +26,7 @@ package org.voisen.freeassociation.search
 
     public interface ISearcher
     {
-        function search(start:Node, end:Node, maxDepth:int = 5, direction:String = "bidirectional"):Vector.<Node>;    
+        function findPath(start:Node, end:Node, maxDepth:int = 5, direction:String = "bidirectional"):Vector.<Node>;    
+        function findAllPaths(start:Node, end:Node, maxDepth:int = 5, direction:String = "bidirectional"):Array;
     }
 }

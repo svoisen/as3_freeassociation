@@ -52,7 +52,7 @@ package test.org.voisen.freeassociation.search
         [Test]
         public function should_search_in_forward_direction():void
         {
-            var path:Vector.<Node> = searcher.search(graph.getNode("a"), graph.getNode("e"), 5, SearchDirections.FORWARD);
+            var path:Vector.<Node> = searcher.findPath(graph.getNode("a"), graph.getNode("e"), 5, SearchDirections.FORWARD);
             
             assertEquals(path.length, 3);
         }
@@ -60,7 +60,7 @@ package test.org.voisen.freeassociation.search
         [Test]
         public function should_search_in_backward_direction():void
         {
-            var path:Vector.<Node> = searcher.search(graph.getNode("e"), graph.getNode("a"), 5, SearchDirections.BACKWARD);
+            var path:Vector.<Node> = searcher.findPath(graph.getNode("e"), graph.getNode("a"), 5, SearchDirections.BACKWARD);
             
             assertEquals(path.length, 3);
         }

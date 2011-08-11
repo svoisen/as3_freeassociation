@@ -32,10 +32,17 @@ package org.voisen.freeassociation.search
         //
         //---------------------------------------------------------------------
         
-        public function search(start:Node, end:Node, maxDepth:int = 5, direction:String = "bidirectional"):Vector.<Node>
+        public function findPath(start:Node, end:Node, maxDepth:int = 5, direction:String = "bidirectional"):Vector.<Node>
         {
             setupSearch(start, end, maxDepth, direction);
             return performSearch();
+        }
+        
+        public function findAllPaths(start:Node, end:Node, maxDepth:int = 5, direction:String = "bidirectional"):Array
+        {
+            setupSearch(start, end, maxDepth, direction); 
+            
+            return null;
         }
         
         //---------------------------------------------------------------------

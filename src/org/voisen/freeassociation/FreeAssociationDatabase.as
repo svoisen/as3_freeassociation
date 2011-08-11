@@ -167,10 +167,10 @@ package org.voisen.freeassociation
         private function performSearch(startNode:Node, endNode:Node, maxDepth:int, searchType:String, direction:String):Vector.<Node>
         {
             if (searchType == SearchTypes.BFS)
-                return new BreadthFirstSearcher().search(startNode, endNode, maxDepth, direction);
+                return new BreadthFirstSearcher().findPath(startNode, endNode, maxDepth, direction);
             
             if (searchType == SearchTypes.DFS)
-                return new DepthFirstSearcher().search(startNode, endNode, maxDepth, direction);
+                return new DepthFirstSearcher().findPath(startNode, endNode, maxDepth, direction);
             
             return null;
         }
