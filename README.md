@@ -9,6 +9,15 @@ This library provides an easy way (in ActionScript) to access and explore the fr
 
 Free association databases such as this may prove to be interesting resources worth exploring not only for psychologists, but also for linguists and artificial intelligence researchers.  For instance, the AS3 Free Association library allows users to quickly find semantic connective paths between words and concepts. An example query might involve finding the shortest cue to target semantic path between such disparate concepts as "MUSIC" and "DOG" (MUSIC -> PRETTY -> HOT -> DOG).
 
+Other cue to target semantic paths (examples chosen at random) include:
+
+RAINBOW -> BEAUTIFUL -> WOMAN -> MOTHER
+UNICORN -> WHITE -> BLACK -> DEATH
+
+Reversed (target to cue) and bidirectional paths can also be searched. For instance, the bidirectional path between "2 LIVE CREW" and "GOLD" is:
+
+2 LIVE CREW - CREW - SPORT - TROPHY - GOLD
+
 Documentation
 -------------
 
