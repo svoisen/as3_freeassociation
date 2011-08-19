@@ -122,6 +122,15 @@ package org.voisen.freeassociation
             return nodeVectorToStringVector(result); 
         }
         
+        public function getRandomAcyclicPath(start:String, length:int):Vector.<String>
+        {
+            if (!hasWord(start))
+                return null;
+            
+            var startNode:Node = graph.getNode(start.toUpperCase());
+            return null;
+        }
+        
         //---------------------------------------------------------------------
         //
         // Mutators

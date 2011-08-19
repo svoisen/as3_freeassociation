@@ -18,6 +18,8 @@
     <classEntry path="test.org.voisen.freeassociation.search.BreadthFirstSearcherTest"/>
     <classEntry path="org.voisen.freeassociation.search.SearchDirections"/>
     <classEntry path="test.org.voisen.freeassociation.search.DepthFirstSearcherTest"/>
+    <classEntry path="org.voisen.freeassociation.search.Wanderer"/>
+    <classEntry path="test.org.voisen.freeassociation.search.WandererTest"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
