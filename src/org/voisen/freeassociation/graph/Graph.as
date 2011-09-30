@@ -55,6 +55,11 @@ package org.voisen.freeassociation.graph
             return hash[word];
         }
         
+        public function getRandomNode():Node
+        {
+            return getNode(words[Math.round(Math.random()*(words.length - 1))]);
+        }
+        
         //---------------------------------------------------------------------
         //
         // Mutators
@@ -63,7 +68,7 @@ package org.voisen.freeassociation.graph
         
         public function get nodeCount():int
         {
-            return _nodeCount; 
+            return words.length;
         }
         
         //---------------------------------------------------------------------
@@ -76,7 +81,7 @@ package org.voisen.freeassociation.graph
         {
             var newNode:Node = new Node(word);
             hash[word] = newNode;
-            _nodeCount++;
+            words.push(word);
             return newNode;
         } 
         
@@ -87,6 +92,6 @@ package org.voisen.freeassociation.graph
         //---------------------------------------------------------------------
         
         private var hash:Object = new Object();
-        private var _nodeCount:int = 0;
+        private var words:Vector.<String> = new Vector.<String>();
     }
 }

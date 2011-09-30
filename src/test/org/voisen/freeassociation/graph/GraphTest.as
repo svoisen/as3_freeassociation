@@ -24,7 +24,9 @@ package test.org.voisen.freeassociation.graph
 {
     import org.flexunit.asserts.assertEquals;
     import org.flexunit.asserts.assertNotNull;
+    import org.flexunit.asserts.assertTrue;
     import org.voisen.freeassociation.graph.Graph;
+    import org.voisen.freeassociation.graph.Node;
 
     public class GraphTest
     {
@@ -57,6 +59,15 @@ package test.org.voisen.freeassociation.graph
         {
             graph.addEdge("a", "b");
             assertEquals(graph.nodeCount, 2);
+        }
+        
+        [Test]
+        public function should_get_random_node():void
+        {
+            graph.addEdge("a", "b");
+            var node:Node = graph.getRandomNode();
+            
+            assertTrue(node.word == "A" || node.word == "B");
         }
         
         //---------------------------------------------------------------------

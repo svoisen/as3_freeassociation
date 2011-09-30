@@ -23,6 +23,7 @@
 package test.org.voisen.freeassociation.search
 {
     import org.flexunit.asserts.assertEquals;
+    import org.flexunit.asserts.assertNull;
     import org.voisen.freeassociation.graph.Graph;
     import org.voisen.freeassociation.graph.Node;
     import org.voisen.freeassociation.search.Wanderer;
@@ -77,9 +78,19 @@ package test.org.voisen.freeassociation.search
         }
         
         [Test]
-        public function should_get_acyclic_path():void
+        public function should_get_acyclic_path_of_proper_length():void
         {
             var path:Vector.<Node> = wanderer.getRandomAcyclicPath(graph.getNode("a"), 3);
+            
+            assertEquals(path.length, 3);
+        }
+        
+        [Test]
+        public function should_return_null_if_no_path_of_length_exists():void
+        {
+            var path:Vector.<Node> = wanderer.getRandomAcyclicPath(graph.getNode("c"), 3);
+            
+            assertNull(path);
         }
         
         //---------------------------------------------------------------------

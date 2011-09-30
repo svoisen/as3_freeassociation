@@ -26,16 +26,52 @@ package org.voisen.freeassociation.search
 
     public class Wanderer
     {
+        //---------------------------------------------------------------------
+        //
+        // Public Methods
+        //
+        //---------------------------------------------------------------------
+        
         public function getRandomAcyclicPath(startNode:Node, length:int, direction:String = "forward"):Vector.<Node>
         {
             var path:Vector.<Node> = new Vector.<Node>();
             var curNode:Node = startNode;
             for (var i:int = 0; i < length; i++)
             {
-                path.push(curNode); 
+                if (!curNode)
+                    return null;
+                
+                path.push(curNode);
+                curNode = chooseRandomNode(getPossibleNextNodes(curNode, direction), path);
             }
             
             return path;
+        }
+        
+        //---------------------------------------------------------------------
+        //
+        // Private Methods
+        //
+        //---------------------------------------------------------------------
+        
+        private function getPossibleNextNodes(node:Node, direction:String):Vector.<Node>
+        {
+            var possibleNextNodes:Vector.<Node>;
+            
+            if (direction == SearchDirections.FORWARD)
+            {
+                possibleNextNodes = node.targets; 
+            }
+            else if (direction == SearchDirections.BACKWARD)
+            {
+                possibleNextNodes = node.cues; 
+            }
+            else
+            {
+                possibleNextNodes = node.targets.concat(node.cues);
+            }
+            
+            return possibleNextNodes;
         }
         
         private function chooseRandomNode(nodes:Vector.<Node>, disallow:Vector.<Node> = null):Node
@@ -44,6 +80,9 @@ package org.voisen.freeassociation.search
             
             if (disallow)
                 removeNodes(disallow, chooseFrom);
+            
+            if (chooseFrom.length > 0)
+                return chooseFrom[Math.round(Math.random()*(chooseFrom.length - 1))]; 
             
             return null;
         }
